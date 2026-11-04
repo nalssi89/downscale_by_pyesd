@@ -20,7 +20,8 @@ from scipy.stats import norm
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE)); sys.path.insert(0, str(ROOT / "pyesd"))
+import products as prodlib  # noqa: E402  (pyesd/products.py: 확률·백분위·임계값 산출, numpy/scipy 만 사용)
 MODELS = HERE / "models"
 PVARS = ["t2m", "d2m", "msl", "tp"]
 # Open-Meteo 일별 / 주·월 변수 이름
@@ -169,26 +170,14 @@ def downscale(corr, per, scale, kind, var):
         x = np.sqrt(np.clip(corr[v], 0, None)) if v == "tp" else corr[v]
         fields[v] = x - M[f"xclim_{v}"][key][None]
     m = per["month"]
-    mu = predict(M, fields, m, key)
-    s = M["sigma"][m]
-    pb = norm.cdf((M["q33"][m] - mu) / s).mean(0)
-    pa = 1 - norm.cdf((M["q67"][m] - mu) / s).mean(0)
-    ycl = M["yclim"][key]
-    r = dict(anom=mu.mean(0), spread=mu.std(0), below=pb, above=pa, near=1 - pb - pa, r_cv=M["r_cv"][m])
-    rng = np.random.default_rng(0)                                             # 멤버별 투영 + 잔차 σ → 10·25·50·75·90 백분위
-    z = mu[:, None, :] + s[None, None, :] * rng.standard_normal((mu.shape[0], 40, mu.shape[1]))
-    Q = np.percentile(z.reshape(-1, mu.shape[1]), (10, 25, 50, 75, 90), 0)
-    if var == "T":
-        r["value"] = ycl + mu.mean(0)
-        for i, qq in enumerate((10, 25, 50, 75, 90)):
-            r[f"p{qq}"] = Q[i]
-    else:
-        val = np.clip(ycl[None] + mu, 0, None) ** 2                           # mm/일
+    mu = predict(M, fields, m, key)                                           # (member, npt) 멤버별 투영 편차
+    q = {k: M[k][m] for k in ("q10", "q33", "q50", "q67", "q90")}
+    normal = None
+    if var == "P":
         normal = M["normal_doy"][key] if "normal_doy" in M else M["normal"][m]
-        r["value"] = val.mean(0); r["normal"] = normal
-        r["pct"] = 100 * val.mean(0) / np.maximum(normal, 0.05)
-        for i, qq in enumerate((10, 25, 50, 75, 90)):
-            r[f"p{qq}"] = 100 * np.clip(ycl + Q[i], 0, None) ** 2 / np.maximum(normal, 0.05)
+    ndays = (per["end"] - per["start"]).days + 1
+    r = prodlib.fields(mu, M["sigma"][m], q, M["yclim"][key], var, scale, ndays, normal=normal)
+    r["r_cv"] = M["r_cv"][m]
     return r, M
 
 
@@ -205,7 +194,8 @@ def run(scale, pred, era5_daily, demo=False):
     res = []
     for p in pers:
         corr, info = bias_correct(X, resp, scale, p, era5_daily)
-        item = dict(period=p["key"], label=p["label"], start=p["start"].isoformat(), end=p["end"].isoformat(), bias=info)
+        item = dict(period=p["key"], label=p["label"], start=p["start"].isoformat(), end=p["end"].isoformat(), bias=info,
+                    kind=scale, ndays=(p["end"] - p["start"]).days + 1)
         for kind in ("grid", "asos"):
             for var in ("T", "P"):
                 r, M = downscale(corr, p, scale, kind, var)
@@ -257,16 +247,14 @@ def to_json(out, products):
                 asos=dict(stn=a["stn"].tolist(), name=a["name"].tolist(), lat=a["lat"].round(4).tolist(), lon=a["lon"].round(4).tolist(),
                           jeju=[int(v) for v in a["jeju"]] if "jeju" in a else [0] * len(a["stn"])))
     south = np.asarray(meta["asos"]["jeju"]) == 0   # 남한 평균 = 제주 제외 62지점
-    rnd = lambda x, nd=2: [None if not np.isfinite(v) else round(float(v), nd) for v in np.asarray(x)]  # noqa: E731
-    pct = lambda x: [None if not np.isfinite(v) else int(round(100 * float(v))) for v in np.asarray(x)]  # noqa: E731
     js = dict(meta=meta, generated=dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes"), products={})
     for scale, P in products.items():
         per = []
         for it in P["periods"]:
-            d = dict(period=it["period"], label=it["label"], start=it["start"], end=it["end"], bias=it["bias"])
+            d = dict(period=it["period"], label=it["label"], start=it["start"], end=it["end"], bias=it["bias"], kind=it["kind"], ndays=it["ndays"])
             for k in ("grid_T", "grid_P", "asos_T", "asos_P"):
                 r = it[k]
-                d[k] = {f: (pct(r[f]) if f in ("below", "near", "above") else rnd(r[f], 0 if f == "pct" or (f.startswith("p") and k.endswith("P")) else 2)) for f in r}
+                d[k] = prodlib.to_jsonable(r, k[-1])
             T, Pp = it["asos_T"], it["asos_P"]
             d["south_mean"] = dict(n=int(south.sum()),
                 T_anom=round(float(np.nanmean(np.asarray(T["anom"])[south])), 2),

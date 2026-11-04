@@ -7,3 +7,5 @@ data/raw/
 *.pkl
 .env
 seas5_monthly/models/*.nc
+site/data/latest/
+site/data/grid.json

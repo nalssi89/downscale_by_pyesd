@@ -38,7 +38,7 @@ for kind in ("grid", "asos"):
                     d[f"m{m}_mu_{v}"] = e["eof"].mu[v].astype("float32")
                     d[f"m{m}_sd_{v}"] = e["eof"].sd[v].astype("float32")
                     d[f"m{m}_pcsd_{v}"] = np.asarray(e["eof"].pcsd[v], "float32")
-            for k in ("q33", "q67", "sigma", "normal", "r_cv"):
+            for k in ("q10", "q33", "q50", "q67", "q90", "sigma", "normal", "r_cv"):
                 d[k] = C[k].astype("float32")
             if var == "P" and scale == "week":
                 # 주 강수 평년(mm/일)을 날짜별로: 1991~2020 같은 날짜 ±15일 평균 (달 경계에서 값이 튀지 않게)

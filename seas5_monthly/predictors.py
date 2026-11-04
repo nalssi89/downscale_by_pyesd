@@ -189,10 +189,13 @@ def save_clims(path, c9120, c9316, hc=None):
     path = Path(path)
     if path.exists():
         path.unlink()
+    enc = lambda ds: {v: {"dtype": "float32", "zlib": True, "complevel": 6} for v in ds.data_vars}  # noqa: E731
     for i, k in enumerate(c9120):
-        xr.Dataset({"c9120": c9120[k], "c9316": c9316[k]}).to_netcdf(path, group=k, mode="w" if i == 0 else "a")
+        ds = xr.Dataset({"c9120": c9120[k].astype("float32"), "c9316": c9316[k].astype("float32")})
+        ds.to_netcdf(path, group=k, mode="w" if i == 0 else "a", encoding=enc(ds))
         if hc and k in hc:                                   # 재예보 기후는 SEAS5 격자(x.5°)라 별도 하위 그룹
-            xr.Dataset({"hc": hc[k]}).to_netcdf(path, group=f"{k}/hc", mode="a")
+            ds = xr.Dataset({"hc": hc[k].astype("float32")})
+            ds.to_netcdf(path, group=f"{k}/hc", mode="a", encoding=enc(ds))
 
 
 def load_clims(path):
@@ -341,6 +344,22 @@ class Weights:
     def apply(self, x):
         """x: (..., ngrid) 평탄화된 장 -> (..., npt)"""
         return np.nan_to_num(np.asarray(x)) @ self.W.T
+
+
+def pack_W(W):
+    """희소 가중행렬 (npt, ngrid) -> (idx int32, val float32) (npt, kmax); 저장 크기 절감"""
+    k = int((W > 0).sum(1).max())
+    idx = np.zeros((W.shape[0], k), np.int32); val = np.zeros((W.shape[0], k), np.float32)
+    for j in range(W.shape[0]):
+        nz = np.nonzero(W[j])[0]
+        idx[j, :len(nz)] = nz; val[j, :len(nz)] = W[j, nz]
+    return idx, val, W.shape[1]
+
+
+def unpack_W(idx, val, ngrid):
+    W = np.zeros((idx.shape[0], int(ngrid)))
+    np.add.at(W, (np.repeat(np.arange(idx.shape[0]), idx.shape[1]), idx.ravel()), val.ravel().astype(float))
+    return W
 
 
 class EOFs:

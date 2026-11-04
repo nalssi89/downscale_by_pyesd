@@ -15,6 +15,10 @@ def load_model(kind, var):
     return dict(np.load(MODELS / f"{kind}_{var}.npz", allow_pickle=False))
 
 
+def model_W(M):
+    return M["W"] if "W" in M else pr.unpack_W(M["W_idx"], M["W_val"], M["W_ngrid"])
+
+
 def model_eofs(M, m):
     e = pr.EOFs()
     e.mu = {v: M[f"m{m}_mu_{v}"] for v in pr.EOF_VARS}; e.sd = {v: M[f"m{m}_sd_{v}"] for v in pr.EOF_VARS}
@@ -27,7 +31,7 @@ class Applier:
 
     def __init__(self, M):
         self.M = M
-        self.Wt = pr.Weights.__new__(pr.Weights); self.Wt.W = M["W"]
+        self.Wt = pr.Weights.__new__(pr.Weights); self.Wt.W = model_W(M)
         self.idx = [str(x) for x in M["idx"]]; self.patterns = pr.Patterns.from_npz(M)
 
     def predict(self, A, lead, month):

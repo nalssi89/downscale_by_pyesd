@@ -9,7 +9,7 @@ PyPI의 pyESD 1.0.7은 scikit-learn 1.9와 맞지 않아(ARD `n_iter`) 같은 �
 | 체계 | 폴더 | 예보 자료 | 예측인자 | 전이함수 | 산출 |
 |---|---|---|---|---|---|
 | **EC46 주별 1개월(1~4주)** | `ec46_weekly/` | Open-Meteo EC46 51멤버 (지상 4변수만 제공) | ERA5 1.5° 247점 t2m·d2m·msl·tp: 변수별 EOF 6개 + 반경 250 km 평균 | 점별·달별 능형회귀 | 매일 (GitHub Actions) |
-| **SEAS5 월별 3개월** | `seas5_monthly/` | C3S CDS SEAS5 51멤버 + 재예보 1993~2016 (지상·상층·SST) | PyESD 원본형: 지역평균 인자(지상 + z500·z850·t850·q850·u/v850) + 장에서 직접 계산한 기후지수(Niño3.4·IOD·WNPSH·EAWM 등) + EOF | 점별 ARD 회귀(자동 인자선택) | 매월 (SEAS5 공개 후) |
+| **SEAS5 월별 3개월** | `seas5_monthly/` | C3S CDS SEAS5 51멤버 + 재예보 1993~2016 25멤버 (지상·상층·SST, 1°) | PyESD 원본형: 반경 250 km 지역평균 12변수(지상 6 + z500·z850·t850·q850·u/v850) + 장에서 직접 계산한 한반도 영향 기후지수 + z500·msl·t2m EOF PC | 점별·달별 ARD 회귀(자동 인자선택) | 매월 14일 (GitHub Actions) |
 
 EC46은 모델 원자료를 받을 경로가 생기기 전까지 Open-Meteo로만 운영합니다.
 
@@ -56,7 +56,40 @@ python ec46_weekly/forecast.py --products week,month  # 보조: Open-Meteo SEAS5
 `asos66_downscaled.csv`(`jeju` 열), `map_week.png`.
 GitHub Actions 「EC46 주별 상세예측」이 매일 실행해 `out-ec46` 브랜치에 올립니다.
 
-## 재학습 (`training/`)
+## SEAS5 월별 3개월 체계 (`seas5_monthly/`)
+
+```bash
+pip install -r training/requirements-train.txt
+export KDS_WORK=data/work CDS_DIR=data/cds OMP_NUM_THREADS=1
+CDSAPI_KEY=... python seas5_monthly/get_cds.py $CDS_DIR --init 10,11 --fc-year 2026   # ERA5 1° 월평균 + SEAS5 재예보·실황 (동시 3건)
+python seas5_monthly/train.py                      # (grid|asos) (T|P): 달별 ARD 학습 + 5년 블록 교차검증 → models/*.npz
+python seas5_monthly/hindcast_verify.py --init 10  # 재예보 리드별 ACC·RPSS·10~90 % 포함률·신뢰도 vs 원 SEAS5 → docs/seas5/, models/clim_init10.nc
+python seas5_monthly/forecast.py --init 10 --year 2026 --leads 2,3,4 --maps   # 다음 3개월 전망 → out/seas5_monthly/
+```
+
+| 단계 | 내용 |
+|---|---|
+| 편차 | ERA5: 1991–2020 달별 기후값. SEAS5: 자기 재예보(1993–2016, 초기화달·리드별) 기후값 기준 + (ERA5 1993–2016 − 1991–2020 기후) 보정 → ERA5 1° 격자로 보간 |
+| 기후지수 (`predictors.py`) | 상자·점: Niño3.4, WNPSH(Z850 15–25N·115–150E), KH 한반도 상공 고기압, OKH 오호츠크 고기압, KSST 주변 SST, WP, 시베리아고기압, EAJ 동아시아 제트(u200; 없으면 u500), CGT, SAH 티베트고기압, DMI, EU. EOF 패턴: PJ(850 hPa 와도), NAO, AO, SRP(v200). 자료가 없는 지수는 자동 제외. 2026 여름 기후인자 분석과 같은 정의, 월평균 기준 |
+| 전이함수 | 달별(±1개월 창) 표본, 열 표준화 후 점별 `ARDRegression` (관련 없는 인자의 계수는 0으로 수렴). EOF·패턴 지수·회귀를 폴드마다 재적합하는 5년 블록 교차검증 |
+| 확률·범위 | 51(재예보 25) 멤버를 각각 투영 + 교차검증 잔차 σ 정규혼합 → 3분위 확률, 10·25·50·75·90 백분위 예측범위(JSON `p10`…`p90`, `south_mean`의 `T_p10/T_p90`) |
+| 운영 | `.github/workflows/seas5_monthly.yml`: 매월 14일 실황 파일만 CDS에서 받아(`--only seas5 --no-hind`) `models/clim_init{mm}.nc`(ERA5·재예보 기후값)와 학습 계수로 전망 → `out-seas5` 브랜치. secret `CDSAPI_KEY` 필요 |
+
+## 사이트 (`site/`)
+
+[objective_climate_outlook](https://nalssi89.github.io/objective_climate_outlook/) 사이트와 같은 구성(Leaflet 지도, 영역·전망 종류·요소·기간·표출 항목 패널, 3분위 우세범주·중앙값 초과·앙상블 평균·평년편차·임계값·극한 확률·스프레드, ASOS 지점 원, 남한 62지점 평균 카드, 지점 상세 창)으로
+EC46 주별(1개월)과 SEAS5 월별(3개월) 상세예측을 0.25° 412격자 + ASOS 66지점으로 표출합니다.
+
+```bash
+python site/build_site_data.py --ec46 out/ec46_weekly/downscaling.json --seas5 out/seas5_monthly/downscaling.json --out site/data
+cd site && python -m http.server 8765     # http://localhost:8765/
+```
+
+`.github/workflows/site.yml`이 두 산출 워크플로가 끝날 때마다 `out-ec46`·`out-seas5` 브랜치의 최신 산출을 변환해 `gh-pages` 브랜치로 올립니다.
+저장소 Settings → Pages → Source를 `gh-pages / (root)`로 한 번 설정하면 https://nalssi89.github.io/downscale_by_pyesd/ 에서 볼 수 있습니다.
+사이트 자료 형식(`manifest.json`, `map_{1m,3m}.json`, `stations.json`, `points/`, `stations/`)은 objective_climate_outlook과 호환되며, 격자(`grid.json`)만 0.25°입니다.
+
+## 재학습 — EC46 주별 (`training/`)
 
 ```bash
 pip install -r training/requirements-train.txt

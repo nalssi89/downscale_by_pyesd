@@ -1,0 +1,55 @@
+# SEAS5 월별 3개월 상세예측: 매월 14일 03:00 UTC(SEAS5 13일 공개 다음 날) 실행, 결과는 out-seas5 브랜치에 게시
+# 필요 secret: CDSAPI_KEY (CDS 개인 API 키). 재예보·ERA5 기후값은 models/clim_init{mm}.nc 로 저장돼 있어 실황 파일만 받는다.
+name: SEAS5 월별 상세예측
+on:
+  workflow_dispatch:
+    inputs:
+      init:
+        description: "초기화 달 (01~12, 비우면 이번 달)"
+        required: false
+        default: ""
+  schedule:
+    - cron: "0 3 14 * *"
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r training/requirements-train.txt
+      - name: 초기화 달·연도 결정
+        id: init
+        run: |
+          MM="${{ github.event.inputs.init }}"; [ -z "$MM" ] && MM=$(date -u +%m)
+          echo "mm=$MM" >> "$GITHUB_OUTPUT"; echo "yy=$(date -u +%Y)" >> "$GITHUB_OUTPUT"
+          test -f "seas5_monthly/models/clim_init${MM}.nc" || { echo "models/clim_init${MM}.nc 없음: 이 초기화 달은 아직 재예보 검증(hindcast_verify.py)을 거치지 않았습니다"; exit 1; }
+      - name: SEAS5 실황 내려받기 (CDS)
+        env:
+          CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}
+        run: python seas5_monthly/get_cds.py data/cds --only seas5 --no-hind --init ${{ steps.init.outputs.mm }} --fc-year ${{ steps.init.outputs.yy }}
+      - name: 상세예측 (리드 2~4 = 다음 3개월)
+        env:
+          CDS_DIR: data/cds
+        run: python seas5_monthly/forecast.py --init ${{ steps.init.outputs.mm }} --year ${{ steps.init.outputs.yy }} --leads 2,3,4 --maps --out out/seas5_monthly
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seas5_monthly
+          path: out/seas5_monthly
+      - name: out-seas5 브랜치에 결과 올리기
+        if: success()
+        run: |
+          set -e
+          cp -r out/seas5_monthly /tmp/preview
+          cd /tmp/preview
+          git init -q -b out-seas5
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "seas5 monthly $(date -u +%Y-%m-%dT%H:%MZ) from ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" out-seas5

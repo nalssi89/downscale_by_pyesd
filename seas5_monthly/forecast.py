@@ -12,29 +12,19 @@ import numpy as np, pandas as pd
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE.parent / "pyesd"))
-import predictors as pr, apply as ap  # noqa: E402
+import predictors as pr, apply as ap, products  # noqa: E402
 from train import CDS  # noqa: E402
 
 KOR = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
 
 
-def downscale(kind, var, A, lead, month):
+def downscale(kind, var, A, lead, month, ndays):
     M = ap.load_model(kind, var); A_ = ap.Applier(M)
-    mu = A_.predict(A, lead, month)[:, 0, :]                      # (member, npt)
-    pb, pn, pa = A_.probs(mu, month)
-    r = dict(anom=mu.mean(0), spread=mu.std(0), below=pb, near=pn, above=pa, r_cv=M[f"m{month}_r_cv"])
-    Q = A_.quantiles(mu, month)                                   # (5, npt) 편차 백분위 10·25·50·75·90 (멤버별 투영 + 잔차)
-    ycl = M["yclim"][month - 1]
-    if var == "T":
-        r["value"] = ycl + mu.mean(0)
-        for i, qq in enumerate((10, 25, 50, 75, 90)):
-            r[f"p{qq}"] = Q[i]                                      # 편차 °C
-    else:
-        val = np.clip(ycl[None] + mu, 0, None) ** 2
-        r["value"] = val.mean(0); r["normal"] = M["normal"][month - 1]
-        r["pct"] = 100 * val.mean(0) / np.maximum(r["normal"], 0.05)
-        for i, qq in enumerate((10, 25, 50, 75, 90)):
-            r[f"p{qq}"] = 100 * np.clip(ycl + Q[i], 0, None) ** 2 / np.maximum(r["normal"], 0.05)   # 평년비 %
+    mu = A_.predict(A, lead, month)[:, 0, :]                      # (member, npt) 멤버별 투영 편차
+    q = {k: M[f"m{month}_{k}"] for k in ("q10", "q33", "q50", "q67", "q90")}
+    r = products.fields(mu, M[f"m{month}_sigma"], q, M["yclim"][month - 1], var, "month", ndays,
+                        normal=M["normal"][month - 1] if var == "P" else None)
+    r["r_cv"] = M[f"m{month}_r_cv"]
     return r, M
 
 
@@ -46,14 +36,11 @@ def to_json(out, P, kinds=("grid", "asos")):
     meta["asos"] = dict(stn=a["stn"].tolist(), name=a["name"].tolist(), lat=a["lat"].round(4).tolist(),
                         lon=a["lon"].round(4).tolist(), jeju=[int(v) for v in a["jeju"]])
     south = np.asarray(meta["asos"]["jeju"]) == 0
-    rnd = lambda x, nd=2: [None if not np.isfinite(v) else round(float(v), nd) for v in np.asarray(x)]  # noqa: E731
-    pct = lambda x: [None if not np.isfinite(v) else int(round(100 * float(v))) for v in np.asarray(x)]  # noqa: E731
     per = []
     for it in P["periods"]:
-        d = {k: it[k] for k in ("period", "label", "start", "end", "lead")}
+        d = {k: it[k] for k in ("period", "label", "start", "end", "lead", "kind", "ndays")}
         for k in [f"{kd}_{v}" for kd in kinds for v in ("T", "P")]:
-            r = it[k]
-            d[k] = {f: (pct(r[f]) if f in ("below", "near", "above") else rnd(r[f], 0 if f == "pct" or (f.startswith("p") and k.endswith("P")) else 2)) for f in r}
+            d[k] = products.to_jsonable(it[k], k[-1])
         T, Pp = it["asos_T"], it["asos_P"]
         nm = lambda x: float(np.nanmean(np.asarray(x)[south]))  # noqa: E731
         d["south_mean"] = dict(n=int(south.sum()), T_anom=round(nm(T["anom"]), 2), T_above=int(round(100 * nm(T["above"]))),
@@ -119,11 +106,12 @@ def main():
     kinds = tuple(a.kinds.split(",")); pers = []
     for ld in [int(x) for x in a.leads.split(",")]:
         vt = init + pd.DateOffset(months=ld - 1); m = vt.month
+        nd = int((vt + pd.offsets.MonthEnd(0)).day)
         it = dict(period=vt.strftime("%Y-%m"), label=f"{vt.year}년 {KOR[m-1]}", start=vt.strftime("%Y-%m-%d"),
-                  end=(vt + pd.offsets.MonthEnd(0)).strftime("%Y-%m-%d"), lead=ld)
+                  end=(vt + pd.offsets.MonthEnd(0)).strftime("%Y-%m-%d"), lead=ld, kind="month", ndays=nd)
         for kind in kinds:
             for var in ("T", "P"):
-                it[f"{kind}_{var}"], _ = downscale(kind, var, A, ld, m)
+                it[f"{kind}_{var}"], _ = downscale(kind, var, A, ld, m, nd)
         pers.append(it)
         k0 = kinds[0]
         print(f"  lead {ld} {it['label']} {k0} 기온 편차 {np.nanmean(it[f'{k0}_T']['anom']):+.2f}°C "

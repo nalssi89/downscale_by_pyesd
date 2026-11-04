@@ -23,11 +23,12 @@ def calib(kind, var, scale):
         return pickle.load(open(f, "rb"))
     ds = xr.open_dataset(WORK / f"cv_{kind}_{var}_{scale}.nc")
     t = ds.time.to_index()
-    out = {k: np.full((13, ds.sizes["pt"]), np.nan) for k in ("q33", "q67", "sigma", "normal", "r_cv")}
+    out = {k: np.full((13, ds.sizes["pt"]), np.nan) for k in ("q10", "q33", "q50", "q67", "q90", "sigma", "normal", "r_cv")}
     for m in range(1, 13):
         c = (t.month == m) & (t.year >= 1991) & (t.year <= 2020)
         o, p = ds.obs.values[c], ds.cv.values[c]
         out["q33"][m], out["q67"][m] = np.nanquantile(o, 1 / 3, 0), np.nanquantile(o, 2 / 3, 0)
+        out["q10"][m], out["q50"][m], out["q90"][m] = np.nanquantile(o, 0.1, 0), np.nanquantile(o, 0.5, 0), np.nanquantile(o, 0.9, 0)
         out["sigma"][m] = np.nanstd(p - o, 0)
         out["r_cv"][m] = [np.corrcoef(o[:, j][np.isfinite(o[:, j])], p[:, j][np.isfinite(o[:, j])])[0, 1]
                           for j in range(o.shape[1])]

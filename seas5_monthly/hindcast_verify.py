@@ -65,7 +65,7 @@ def verify(kind, var, mm, Fh, A, c9120):
         # 기준선: 원 SEAS5 지역평균 편차 (t2m 또는 sqrt 강수), 멤버 분포 3분위 (재예보 자체 분위)
         v = "t2m" if var == "T" else "tp"
         raw = A[v].sel(lead=ld).transpose("member", "init", "lat", "lon").values.reshape(mu.shape[0], mu.shape[1], -1)
-        raw = np.nan_to_num(raw) @ M["W"].T                                      # (member, ninit, npt)
+        raw = np.nan_to_num(raw) @ ap.model_W(M).T                                # (member, ninit, npt)
         rq33, rq67 = np.nanpercentile(raw, 100 / 3, (0, 1)), np.nanpercentile(raw, 200 / 3, (0, 1))
         rpb = (raw < rq33).mean(0); rpa = (raw > rq67).mean(0); rpn = 1 - rpb - rpa
         q33, q67 = M[f"m{m}_q33"], M[f"m{m}_q67"]

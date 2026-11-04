@@ -105,7 +105,8 @@ def run(kind, var):
         return pr.feature_table(sub, Wt, eofs, ("time",), idx_names, patterns)
 
     cv = np.full_like(Y, np.nan)
-    out = {"lat": lat, "lon": lon, "plat": plat, "plon": plon, "W": Wt.W, "yclim": yclim,
+    W_idx, W_val, ngrid = pr.pack_W(Wt.W)
+    out = {"lat": lat, "lon": lon, "plat": plat, "plon": plon, "W_idx": W_idx, "W_val": W_val, "W_ngrid": ngrid, "yclim": yclim,
            "features": np.array(feats), "local": np.array(pr.LOCAL), "idx": np.array(idx_names)}
     patterns.to_npz(out)
     out.update({k: np.asarray(v) for k, v in meta.items()})
@@ -122,10 +123,13 @@ def run(kind, var):
         res = Y[cen] - cv[cen]
         out[f"m{m}_coef"] = c
         for v in pr.EOF_VARS:
-            out[f"m{m}_mu_{v}"], out[f"m{m}_sd_{v}"], out[f"m{m}_eof_{v}"], out[f"m{m}_pcsd_{v}"] = e.mu[v], e.sd[v], e.eof[v], e.pcsd[v]
+            out[f"m{m}_mu_{v}"], out[f"m{m}_sd_{v}"] = e.mu[v].astype(np.float32), e.sd[v].astype(np.float32)
+            out[f"m{m}_eof_{v}"], out[f"m{m}_pcsd_{v}"] = e.eof[v].astype(np.float32), e.pcsd[v]
         out[f"m{m}_evr"] = np.concatenate([e.evr[v] for v in pr.EOF_VARS])
         out[f"m{m}_sigma"] = np.nanstd(res, 0)
-        out[f"m{m}_q33"] = np.nanpercentile(Y[cen], 100 / 3, 0); out[f"m{m}_q67"] = np.nanpercentile(Y[cen], 200 / 3, 0)
+        yc = Y[cen & (yrs >= pr.CLIM[0]) & (yrs <= pr.CLIM[1])]                 # 관측 편차 분위 (1991~2020)
+        for nm_, qq in (("q10", 10), ("q33", 100 / 3), ("q50", 50), ("q67", 200 / 3), ("q90", 90)):
+            out[f"m{m}_{nm_}"] = np.nanpercentile(yc, qq, 0)
         oc, cc = Y[cen], cv[cen]
         out[f"m{m}_r_cv"] = np.array([np.corrcoef(oc[np.isfinite(oc[:, j]), j], cc[np.isfinite(oc[:, j]), j])[0, 1]
                                       if np.isfinite(oc[:, j]).sum() > 5 else np.nan for j in range(Y.shape[1])])

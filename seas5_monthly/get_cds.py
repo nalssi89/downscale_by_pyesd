@@ -3,7 +3,7 @@
   CDSAPI_KEY=... python seas5_monthly/get_cds.py OUTDIR [--init 10,11] [--fc-year 2026] [--only era5|seas5] [--workers 3]
 
 받는 것 (모두 월평균 NetCDF, 1° 격자):
-  ERA5 (학습·검증 기준, 1991~현재)
+  ERA5 (학습·검증 기준, 1991~현재; CDS 비용 한도 때문에 연도 구간별 parts/ 로 받아 합침)
     era5_sfc.nc      t2m·d2m·msl·tp·u10·v10·sst            영역 [60N,60E,10N,180E]
     era5_sst_nino34.nc  sst                                  Niño3.4 상자 [5N,170W,5S,120W]
     era5_pl.nc       z·t·q·u·v @500·850 hPa                 영역 [60N,60E,0N,180E]
@@ -29,18 +29,44 @@ HIND_YEARS = [str(y) for y in range(1993, 2017)]
 MONTHS = [f"{m:02d}" for m in range(1, 13)]
 
 
-def era5_requests(y0=1991, y1=None):
-    y1 = y1 or time.gmtime().tm_year
-    years = [str(y) for y in range(y0, y1 + 1)]
-    base = dict(product_type=["monthly_averaged_reanalysis"], year=years, month=MONTHS, time=["00:00"],
-                data_format="netcdf", download_format="unarchived", grid=[1.0, 1.0])
-    return [
-        ("era5_sfc.nc", "reanalysis-era5-single-levels-monthly-means", dict(base, variable=SFC_VARS, area=AREA_SFC)),
-        ("era5_sst_nino34.nc", "reanalysis-era5-single-levels-monthly-means",
-         dict(base, variable=["sea_surface_temperature"], area=AREA_NINO34)),
-        ("era5_pl.nc", "reanalysis-era5-pressure-levels-monthly-means",
-         dict(base, variable=PL_VARS, pressure_level=LEVELS, area=AREA_PL)),
-    ]
+ERA5_PARTS = {"era5_sfc.nc": [(1991, 2008), (2009, 2025)], "era5_pl.nc": [(1991, 2025)], "era5_sst_nino34.nc": [(1991, 2025)]}
+ERA5_SPEC = {"era5_sfc.nc": ("reanalysis-era5-single-levels-monthly-means", dict(variable=SFC_VARS, area=AREA_SFC)),
+             "era5_sst_nino34.nc": ("reanalysis-era5-single-levels-monthly-means",
+                                    dict(variable=["sea_surface_temperature"], area=AREA_NINO34)),
+             "era5_pl.nc": ("reanalysis-era5-pressure-levels-monthly-means",
+                            dict(variable=PL_VARS, pressure_level=LEVELS, area=AREA_PL))}
+
+
+def _era5_base(years, months=MONTHS):
+    return dict(product_type=["monthly_averaged_reanalysis"], year=[str(y) for y in years], month=list(months),
+                time=["00:00"], data_format="netcdf", download_format="unarchived", grid=[1.0, 1.0])
+
+
+def era5_requests(y0=1991):
+    """CDS 비용 한도(단일면 20000)를 넘지 않도록 연도 구간별 부분 파일로 나눔. 올해 분은 1~(현재달-1) → 실패 시 한 달 더 줄여 재시도.
+    반환 [(부분파일명, dataset, 요청, 합칠 최종파일명), ...]"""
+    now = time.gmtime(); cur = now.tm_year
+    reqs = []
+    for final, (ds, spec) in ERA5_SPEC.items():
+        for a, b in ERA5_PARTS[final]:
+            reqs.append((f"parts/{final[:-3]}_{a}_{b}.nc", ds, dict(_era5_base(range(a, b + 1)), **spec), final))
+        nm = max(now.tm_mon - 1, 1)                      # 월평균은 보통 전달까지 공개
+        reqs.append((f"parts/{final[:-3]}_{cur}.nc", ds, [dict(_era5_base([cur], MONTHS[:k]), **spec) for k in (nm, nm - 1) if k >= 1], final))
+    return reqs
+
+
+def merge_era5(out, final, parts):
+    import xarray as xr
+    f = out / final
+    if f.exists():
+        return f"skip merge {final}"
+    fs = [out / p for p in parts]
+    miss = [p for p in fs if not p.exists()]
+    if miss:
+        return f"merge skip {final}: missing {[m.name for m in miss]}"
+    ds = xr.open_mfdataset(fs, combine="by_coords", compat="override", coords="minimal")
+    ds.load().to_netcdf(f)
+    return f"merged {final} {f.stat().st_size // 1024} KB"
 
 
 def seas5_requests(init_months, fc_year):
@@ -67,15 +93,19 @@ def fetch(out, name, dataset, req):
         return f"skip {name}"
     t0 = time.time()
     log = out / f"log_{name}.txt"
-    try:
-        c = cdsapi.Client(url=CDS_URL, key=os.environ["CDSAPI_KEY"], quiet=True, progress=False)
-        tmp = f.with_suffix(".part")
-        c.retrieve(dataset, req, str(tmp))
-        tmp.rename(f)
-        msg = f"ok {name} {f.stat().st_size // 1024} KB {time.time() - t0:.0f}s"
-    except Exception as e:  # noqa: BLE001
-        msg = f"FAIL {name} {time.time() - t0:.0f}s {e}"
-        log.write_text(traceback.format_exc(), encoding="utf-8")
+    f.parent.mkdir(parents=True, exist_ok=True)
+    msg = ""
+    for r in (req if isinstance(req, list) else [req]):          # 리스트면 앞에서부터 시도(올해 분 폴백)
+        try:
+            c = cdsapi.Client(url=CDS_URL, key=os.environ["CDSAPI_KEY"], quiet=True, progress=False)
+            tmp = f.with_suffix(".part")
+            c.retrieve(dataset, r, str(tmp))
+            tmp.rename(f)
+            msg = f"ok {name} {f.stat().st_size // 1024} KB {time.time() - t0:.0f}s"
+            break
+        except Exception as e:  # noqa: BLE001
+            msg = f"FAIL {name} {time.time() - t0:.0f}s {e}"
+            log.write_text(traceback.format_exc(), encoding="utf-8")
     print(msg, flush=True)
     return msg
 
@@ -92,15 +122,20 @@ def main():
     if "CDSAPI_KEY" not in os.environ:
         sys.exit("CDSAPI_KEY 환경변수가 없습니다")
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
-    reqs = []
+    reqs, merges = [], {}
     if a.only != "seas5":
-        reqs += era5_requests()
+        for part, ds, req, final in era5_requests():
+            merges.setdefault(final, []).append(part)
+            if not (out / final).exists():
+                reqs.append((part, ds, req))
     if a.only != "era5":
         r = seas5_requests([int(m) for m in a.init.split(",")], a.fc_year)
         reqs += [x for x in r if not (a.no_fc and "_fc" in x[0])]
     print(f"{len(reqs)} requests, {a.workers} at a time", flush=True)
     with ThreadPoolExecutor(max_workers=min(a.workers, 3)) as ex:
         list(ex.map(lambda r: fetch(out, *r), reqs))
+    for final, parts in merges.items():
+        print(merge_era5(out, final, parts), flush=True)
 
 
 if __name__ == "__main__":

@@ -6,3 +6,4 @@ data/raw/
 *.grib
 *.pkl
 .env
+seas5_monthly/models/*.nc

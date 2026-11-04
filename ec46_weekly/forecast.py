@@ -175,13 +175,20 @@ def downscale(corr, per, scale, kind, var):
     pa = 1 - norm.cdf((M["q67"][m] - mu) / s).mean(0)
     ycl = M["yclim"][key]
     r = dict(anom=mu.mean(0), spread=mu.std(0), below=pb, above=pa, near=1 - pb - pa, r_cv=M["r_cv"][m])
+    rng = np.random.default_rng(0)                                             # 멤버별 투영 + 잔차 σ → 10·25·50·75·90 백분위
+    z = mu[:, None, :] + s[None, None, :] * rng.standard_normal((mu.shape[0], 40, mu.shape[1]))
+    Q = np.percentile(z.reshape(-1, mu.shape[1]), (10, 25, 50, 75, 90), 0)
     if var == "T":
         r["value"] = ycl + mu.mean(0)
+        for i, qq in enumerate((10, 25, 50, 75, 90)):
+            r[f"p{qq}"] = Q[i]
     else:
         val = np.clip(ycl[None] + mu, 0, None) ** 2                           # mm/일
         normal = M["normal_doy"][key] if "normal_doy" in M else M["normal"][m]
         r["value"] = val.mean(0); r["normal"] = normal
         r["pct"] = 100 * val.mean(0) / np.maximum(normal, 0.05)
+        for i, qq in enumerate((10, 25, 50, 75, 90)):
+            r[f"p{qq}"] = 100 * np.clip(ycl + Q[i], 0, None) ** 2 / np.maximum(normal, 0.05)
     return r, M
 
 
@@ -259,7 +266,7 @@ def to_json(out, products):
             d = dict(period=it["period"], label=it["label"], start=it["start"], end=it["end"], bias=it["bias"])
             for k in ("grid_T", "grid_P", "asos_T", "asos_P"):
                 r = it[k]
-                d[k] = {f: (pct(r[f]) if f in ("below", "near", "above") else rnd(r[f], 0 if f == "pct" else 2)) for f in r}
+                d[k] = {f: (pct(r[f]) if f in ("below", "near", "above") else rnd(r[f], 0 if f == "pct" or (f.startswith("p") and k.endswith("P")) else 2)) for f in r}
             T, Pp = it["asos_T"], it["asos_P"]
             d["south_mean"] = dict(n=int(south.sum()),
                 T_anom=round(float(np.nanmean(np.asarray(T["anom"])[south])), 2),
@@ -267,19 +274,23 @@ def to_json(out, products):
                 T_below=int(round(100 * float(np.nanmean(np.asarray(T["below"])[south])))),
                 P_pct=int(round(float(np.nanmean(np.asarray(Pp["pct"])[south])))),
                 P_above=int(round(100 * float(np.nanmean(np.asarray(Pp["above"])[south])))),
-                P_below=int(round(100 * float(np.nanmean(np.asarray(Pp["below"])[south])))))
+                P_below=int(round(100 * float(np.nanmean(np.asarray(Pp["below"])[south])))),
+                T_p10=round(float(np.nanmean(np.asarray(T["p10"])[south])), 2), T_p90=round(float(np.nanmean(np.asarray(T["p90"])[south])), 2),
+                P_p10=int(round(float(np.nanmean(np.asarray(Pp["p10"])[south])))), P_p90=int(round(float(np.nanmean(np.asarray(Pp["p90"])[south])))))
             per.append(d)
         js["products"][scale] = dict(issued=P["issued"], model=P["model"], periods=per)
     (out / "downscaling.json").write_text(json.dumps(js, ensure_ascii=False, separators=(",", ":")))
     # ASOS 지점 표 (CSV)
-    rows = ["product,period,stn,name,jeju,T_anom,T_value,T_below,T_near,T_above,P_value,P_pct,P_below,P_near,P_above"]
+    rows = ["product,period,stn,name,jeju,T_anom,T_value,T_below,T_near,T_above,T_p10,T_p90,P_value,P_pct,P_below,P_near,P_above,P_p10,P_p90"]
     for scale, P in products.items():
         for it in P["periods"]:
             T, Pp = it["asos_T"], it["asos_P"]
             for j, s in enumerate(meta["asos"]["stn"]):
                 rows.append(",".join(map(str, [scale, it["period"], s, meta["asos"]["name"][j], meta["asos"]["jeju"][j],
                     f"{T['anom'][j]:.2f}", f"{T['value'][j]:.2f}", f"{T['below'][j]:.2f}", f"{T['near'][j]:.2f}", f"{T['above'][j]:.2f}",
-                    f"{Pp['value'][j]:.2f}", f"{Pp['pct'][j]:.0f}", f"{Pp['below'][j]:.2f}", f"{Pp['near'][j]:.2f}", f"{Pp['above'][j]:.2f}"])))
+                    f"{T['p10'][j]:.2f}", f"{T['p90'][j]:.2f}",
+                    f"{Pp['value'][j]:.2f}", f"{Pp['pct'][j]:.0f}", f"{Pp['below'][j]:.2f}", f"{Pp['near'][j]:.2f}", f"{Pp['above'][j]:.2f}",
+                    f"{Pp['p10'][j]:.0f}", f"{Pp['p90'][j]:.0f}"])))
     (out / "asos66_downscaled.csv").write_text("\n".join(rows) + "\n", encoding="utf-8-sig")
 
 

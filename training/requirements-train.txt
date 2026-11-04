@@ -1,0 +1,14 @@
+# 학습·검증·자료 입수 (training/, seas5_monthly/)
+numpy>=1.26
+scipy>=1.11
+pandas>=2.1
+xarray>=2024.1
+netCDF4>=1.6
+zarr>=2.16
+dask>=2024.1
+scikit-learn>=1.4
+matplotlib>=3.8
+koreanize-matplotlib>=0.1
+basemap-data-hires>=1.3
+requests>=2.31
+cdsapi>=0.7

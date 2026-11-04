@@ -1,0 +1,6 @@
+# 운영(ec46_weekly/forecast.py): numpy·scipy·requests, 지도는 matplotlib
+numpy>=1.26
+scipy>=1.11
+requests>=2.31
+matplotlib>=3.8
+koreanize-matplotlib>=0.1

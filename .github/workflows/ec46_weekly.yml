@@ -1,0 +1,39 @@
+# EC46 주별 1개월(1~4주) 상세예측: 매일 09:30 UTC(18:30 KST) 실행, 결과는 out-ec46 브랜치에 단일 커밋으로 게시
+name: EC46 주별 상세예측
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 9 * * *"
+  push:
+    paths: ["ec46_weekly/**", ".github/workflows/ec46_weekly.yml"]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: EC46 주별 상세예측
+        run: python ec46_weekly/forecast.py --maps --out out/ec46_weekly
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ec46_weekly
+          path: out/ec46_weekly
+      - name: out-ec46 브랜치에 결과 올리기
+        if: success()
+        run: |
+          set -e
+          cp -r out/ec46_weekly /tmp/preview
+          cd /tmp/preview
+          git init -q -b out-ec46
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "ec46 weekly $(date -u +%Y-%m-%dT%H:%MZ) from ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" out-ec46

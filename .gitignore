@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+out/
+data/raw/
+*.nc
+*.grib
+*.pkl
+.env

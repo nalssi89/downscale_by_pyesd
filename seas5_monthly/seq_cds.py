@@ -1,7 +1,8 @@
 """get_cds.py 요청 목록을 데이터셋 묶음(ERA5 단일면 / ERA5 기압면 / SEAS5)별로 한 번에 1건씩 순차 처리. 이미 CDS에 올라가 있는(대기/성공) 같은 요청은 새로 내지 않고 이어받는다.
   python seas5_monthly/seq_cds.py OUTDIR --init 10,11 --fc-year 2026
 """
-import os, sys, time, json, traceback
+import os, sys, time, json, traceback, faulthandler, signal
+faulthandler.register(signal.SIGUSR1)
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 import get_cds as g
@@ -36,6 +37,15 @@ reqs.sort(key=lambda x: 0 if any((x[1], norm(r)) in existing for r in (x[2] if i
 todo = [x for x in reqs if not ((out / x[0]).exists() and (out / x[0]).stat().st_size > 0)]
 print(f"{len(todo)} to fetch sequentially", flush=True)
 
+def unzip_if_needed(p):
+    """CDS가 zip(여러 stepType nc)으로 주면 하나의 nc로 합쳐 같은 경로에 둔다."""
+    import zipfile, tempfile, xarray as xr
+    if not zipfile.is_zipfile(p): return
+    with tempfile.TemporaryDirectory() as td:
+        zipfile.ZipFile(p).extractall(td)
+        ds = xr.merge([xr.open_dataset(x).load() for x in sorted(Path(td).glob("*.nc"))], compat="override")
+        ds.to_netcdf(str(p) + ".tmp")
+    os.replace(str(p) + ".tmp", p)
 def queue_full(rem):
     try:
         import requests
@@ -46,8 +56,11 @@ def queue_full(rem):
 def lane_of(ds):
     return "era5_sl" if ds.startswith("reanalysis-era5-single") else "era5_pl" if ds.startswith("reanalysis-era5-pressure") else "seas5"
 def run_lane(todo):
+    c = Client(url=g.CDS_URL, key=os.environ["CDSAPI_KEY"])      # 묶음마다 별도 클라이언트
     for i, (name, ds, req) in enumerate(todo, 1):
         f = out / name; f.parent.mkdir(parents=True, exist_ok=True); t0 = time.time(); msg = ""
+        if f.exists() and f.stat().st_size > 0:                     # 같은 이름 파일이 이미 있으면 요청하지 않음
+            print(f"skip {name} (exists)", flush=True); continue
         for r in (req if isinstance(req, list) else [req]):
             try:
                 rem = existing.get((ds, norm(r)))
@@ -55,14 +68,19 @@ def run_lane(todo):
                     if rem is None:
                         rem = c.submit(ds, r)
                     print(f"[{i}/{len(todo)}] {name} job {rem.request_id[:8]} {rem.status}", flush=True)
-                    while rem.status not in ("successful", "failed", "rejected", "dismissed", "deleted"):
-                        time.sleep(30)
+                    st = rem.status
+                    while st not in ("successful", "failed", "rejected", "dismissed", "deleted"):
+                        time.sleep(60)
+                        try: st = c.get_remote(rem.request_id).status
+                        except Exception as e: print("   poll error", name, str(e)[:100], flush=True)
+                    print(f"   {name} -> {st} {time.strftime('%H:%M')}", flush=True)
+                    rem = c.get_remote(rem.request_id)
                     if rem.status == "rejected" and queue_full(rem):      # 큐 한도 거절 → 10분 뒤 같은 요청 재제출
                         print(f"   queue full, retry in 10 min ({name})", flush=True); time.sleep(600); rem = None; continue
                     break
                 if rem.status != "successful":
                     raise RuntimeError(f"status {rem.status}: {rem.json.get('metadata', {})}")
-                tmp = f.with_suffix(".part"); rem.download(str(tmp)); tmp.rename(f)
+                tmp = f.with_suffix(".part"); rem.download(str(tmp)); unzip_if_needed(tmp); tmp.rename(f)
                 msg = f"ok {name} {f.stat().st_size // 1024} KB {time.time() - t0:.0f}s"; break
             except Exception as e:
                 msg = f"FAIL {name} {time.time() - t0:.0f}s {str(e)[:300]}"

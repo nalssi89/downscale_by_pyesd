@@ -37,6 +37,8 @@ for x in sc.requests([int(m) for m in init.split(",")], fy):
     fins = _fin(x[0])
     if fins and all((out / f).exists() for f in fins):   # 잘라낸 결과가 이미 다 있으면 요청 안 함
         continue
+    if x[0].endswith("_slall.nc") and (out / fins[0]).exists():   # 지상 _sfc가 이미 있으면 SST만 요청
+        x = (x[0], x[1], dict(x[2], variable=["sea_surface_temperature"]))
     reqs.append(x)
 # 이미 CDS에 대기 중인 요청을 앞으로
 reqs.sort(key=lambda x: 0 if any((x[1], norm(r)) in existing for r in (x[2] if isinstance(x[2], list) else [x[2]])) else 1)
@@ -60,7 +62,7 @@ def queue_full(rem):
     except Exception:
         return False
 def lane_of(ds):      # ERA5 지상(이미 대기 중인 2건)만 따로, 나머지는 한 줄로: 사용자당 대기열 자리를 1개만 더 씀
-    return "era5_sl" if ds.startswith("reanalysis-era5-single") else "main"
+    return "main"            # 모든 요청을 한 줄로: CDS 전체에서 한 번에 1건만 (사용자 지시 2026-11-05)
 def run_lane(todo):
     c = Client(url=g.CDS_URL, key=os.environ["CDSAPI_KEY"])      # 묶음마다 별도 클라이언트
     for i, (name, ds, req) in enumerate(todo, 1):
@@ -102,9 +104,9 @@ for x in todo: lanes.setdefault(lane_of(x[1]), []).append(x)
 # SEAS5: 실황 11월(13일 공개)은 맨 뒤
 def _ord(x):
     n = x[0]
-    if "era5_pl_2026" in n: return 0                       # 이미 대기 중
     if "_hind_10_" in n: return 1
     if "_fc" in n and "_10_" in n: return 2
+    if n.startswith("parts/era5_sfc"): return 3.5           # 대기 가장 긴 ERA5 지상은 뒤로
     if n.startswith("parts/"): return 3
     if "_hind_11_" in n: return 4
     return 5                                               # 11월 실황(13일 공개)

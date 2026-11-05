@@ -93,6 +93,24 @@ def select(tm2):
     return st
 
 
+def precip_check(a, st, max_km=30.0, min_r=0.9):
+    """추가 지점의 월강수량이 30 km 안의 ASOS 66 지점과 상관 0.9 이상인지 본다 (공항 우량계 등 이질 자료 거르기).
+    30 km 안에 ASOS가 없으면(도서) 통과. 반환: 지점별 1(사용)/0(제외)"""
+    a66 = st.asos66.values == 1
+    la, lo = np.deg2rad(st.lat.values), np.deg2rad(st.lon.values)
+    d = 6371 * np.arccos(np.clip(np.sin(la[:, None]) * np.sin(la) + np.cos(la[:, None]) * np.cos(la) * np.cos(lo[:, None] - lo), -1, 1))
+    ok = np.ones(len(st), int)
+    for j in np.where(~a66)[0]:
+        c = np.where(a66)[0]; n = c[np.argmin(d[j, c])]
+        if d[j, n] > max_km:
+            continue
+        x, y = a.iloc[:, j].values, a.iloc[:, n].values; k = np.isfinite(x) & np.isfinite(y)
+        r = np.corrcoef(x[k], y[k])[0, 1] if k.sum() > 24 else np.nan
+        ok[j] = int(np.isfinite(r) and r >= min_r)
+        print(f"  강수 점검 {st.name.iloc[j]} ↔ {st.name.iloc[n]} {d[j, n]:.0f} km r={r:.2f} {'사용' if ok[j] else '제외'}")
+    return ok
+
+
 def build(outdir, tm2):
     st = pd.read_csv(HERE / "base_stations.csv")
     stns = st.STN.tolist()
@@ -103,8 +121,11 @@ def build(outdir, tm2):
         d["per"] = pd.PeriodIndex([f"{x // 100}-{x % 100:02d}" for x in d.TM], freq="M")
         a = d.pivot_table(index="per", columns="STN", values="VAL", aggfunc="first").reindex(index=t, columns=stns)
         if nm == "P":                                    # 월합계(mm) → 월평균 일강수량(mm/일)
+            st["p_ok"] = precip_check(a, st)
+            a.loc[:, st.STN[st.p_ok == 0].values] = np.nan  # 강수 품질 미달 지점은 기온에만 쓴다
             a = a.div(t.days_in_month, axis=0)
         data[nm] = (("time", "stn"), a.values.astype("float32"))
+    st.to_csv(HERE / "base_stations.csv", index=False)
     ds = xr.Dataset(data, coords=dict(time=t.to_timestamp(), stn=stns,
                                       lat=("stn", st.lat.values), lon=("stn", st.lon.values),
                                       alt=("stn", st.alt.values), name=("stn", st.name.fillna("").astype(str).values),

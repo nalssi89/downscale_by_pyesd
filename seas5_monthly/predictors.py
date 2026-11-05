@@ -40,7 +40,7 @@ def _std(ds):
     ds = ds.rename({k: NAME[k] for k in ds.data_vars if k in NAME})
     if "lat" in ds.dims and ds.lat.values[0] > ds.lat.values[-1]:
         ds = ds.isel(lat=slice(None, None, -1))
-    return ds.drop_vars([c for c in ("expver", "surface", "step", "valid_time") if c in ds.coords and c not in ds.dims])
+    return ds.drop_vars([c for c in ("expver", "surface", "step", "valid_time", "member", "number") if c in ds.coords and c not in ds.dims])
 
 
 def _units(ds, kind):
@@ -92,9 +92,11 @@ def load_era5(d):
     F["nino_sst"] = nino
     F.update(_ext(d, "era5_{suf}.nc", "era5"))
     F = {k: v.transpose("time", "lat", "lon") for k, v in F.items()}
-    t = pd.DatetimeIndex(F["t2m"].time.values).to_period("M").to_timestamp()
-    for k in F:
-        F[k] = F[k].assign_coords(time=t)
+    for k in F:                                   # CDS 월평균은 순간장(00Z)·누적장(06Z) 시각이 달라 한 달에 두 시각 → 월별 평균(NaN 무시)
+        x = F[k]
+        if len(x.time) != len(pd.DatetimeIndex(x.time.values).to_period("M").unique()):
+            x = x.resample(time="MS").mean()
+        F[k] = x.assign_coords(time=pd.DatetimeIndex(x.time.values).to_period("M").to_timestamp())
     return F
 
 

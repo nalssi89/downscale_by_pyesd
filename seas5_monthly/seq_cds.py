@@ -31,7 +31,13 @@ reqs, merges = [], {}
 for part, ds, req, final in g.era5_requests():
     merges.setdefault(final, []).append(part)
     if not (out / final).exists(): reqs.append((part, ds, req))
-reqs += g.seas5_requests([int(m) for m in init.split(",")], fy)
+import seas5_combined as sc
+_fin = lambda nm: [f"{nm.replace('combined/', '').replace(k, '')}{x}.nc" for k, xs in (("_slall.nc", ("_sfc", "_sst_nino34", "_sst_io")), ("_plall.nc", ("_pl", "_pl200"))) if k in nm for x in xs]
+for x in sc.requests([int(m) for m in init.split(",")], fy):
+    fins = _fin(x[0])
+    if fins and all((out / f).exists() for f in fins):   # 잘라낸 결과가 이미 다 있으면 요청 안 함
+        continue
+    reqs.append(x)
 # 이미 CDS에 대기 중인 요청을 앞으로
 reqs.sort(key=lambda x: 0 if any((x[1], norm(r)) in existing for r in (x[2] if isinstance(x[2], list) else [x[2]])) else 1)
 todo = [x for x in reqs if not ((out / x[0]).exists() and (out / x[0]).stat().st_size > 0)]
@@ -53,8 +59,8 @@ def queue_full(rem):
         return "queued requests" in t or "available slots" in t
     except Exception:
         return False
-def lane_of(ds):
-    return "era5_sl" if ds.startswith("reanalysis-era5-single") else "era5_pl" if ds.startswith("reanalysis-era5-pressure") else "seas5"
+def lane_of(ds):      # ERA5 지상(이미 대기 중인 2건)만 따로, 나머지는 한 줄로: 사용자당 대기열 자리를 1개만 더 씀
+    return "era5_sl" if ds.startswith("reanalysis-era5-single") else "main"
 def run_lane(todo):
     c = Client(url=g.CDS_URL, key=os.environ["CDSAPI_KEY"])      # 묶음마다 별도 클라이언트
     for i, (name, ds, req) in enumerate(todo, 1):
@@ -81,6 +87,8 @@ def run_lane(todo):
                 if rem.status != "successful":
                     raise RuntimeError(f"status {rem.status}: {rem.json.get('metadata', {})}")
                 tmp = f.with_suffix(".part"); rem.download(str(tmp)); unzip_if_needed(tmp); tmp.rename(f)
+                if "combined/" in name:
+                    print("   split ->", sc.split(out, name), flush=True)
                 msg = f"ok {name} {f.stat().st_size // 1024} KB {time.time() - t0:.0f}s"; break
             except Exception as e:
                 msg = f"FAIL {name} {time.time() - t0:.0f}s {str(e)[:300]}"
@@ -92,7 +100,17 @@ from concurrent.futures import ThreadPoolExecutor
 lanes = {}
 for x in todo: lanes.setdefault(lane_of(x[1]), []).append(x)
 # SEAS5: 실황 11월(13일 공개)은 맨 뒤
-lanes.get("seas5", []).sort(key=lambda x: ("_fc" in x[0] and "_11_" in x[0], "_fc" in x[0]))
+def _ord(x):
+    n = x[0]
+    if "era5_pl_2026" in n: return 0                       # 이미 대기 중
+    if "_hind_10_" in n: return 1
+    if n.startswith("parts/"): return 2
+    if "_hind_11_" in n: return 3
+    if "_fc" in n and "_10_" in n: return 4
+    return 5                                               # 11월 실황(13일 공개)
+lanes.get("main", []).sort(key=_ord)
+if os.environ.get("DRY"):
+    [print(k, x[0]) for k, v in lanes.items() for x in v]; sys.exit()
 print({k: len(v) for k, v in lanes.items()}, flush=True)
 with ThreadPoolExecutor(len(lanes) or 1) as ex: list(ex.map(run_lane, lanes.values()))
 

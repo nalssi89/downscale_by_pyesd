@@ -7,5 +7,6 @@ data/raw/
 *.pkl
 .env
 seas5_monthly/models/*.nc
+!seas5_monthly/models/clim_init*.nc
 site/data/latest/
 site/data/grid.json

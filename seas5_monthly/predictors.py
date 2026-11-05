@@ -168,6 +168,8 @@ def seas5_anoms(hc, Ff, clim9120, clim9316):
     Ff 적용 대상(재예보 자신 또는 실황). 반환 dict var -> (member, init, lead, lat, lon)"""
     A = {}
     for k in Ff:
+        if k not in clim9120 or k not in hc:               # ERA5에 없는 확장 장(예: SEAS5만 받은 200 hPa)은 건너뜀
+            continue
         xf = Ff[k]
         if k == "tp":
             xf = np.sqrt(xf.clip(min=0))

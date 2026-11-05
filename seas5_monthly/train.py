@@ -42,9 +42,38 @@ def load_target(kind, var):
             meta["asos66"] = ds.asos66.values
         da = da.drop_vars([c for c in da.coords if c != "time"])
     mon = esd.transform(da if kind == "base" else esd.aggregate(da, "month"), var)   # base 는 이미 월자료
-    ya, yclim = esd.anomalies(mon, "month")
+    if kind == "base":
+        ya, yclim = base_anomalies(mon, lat, lon, meta, var)
+    else:
+        ya, yclim = esd.anomalies(mon, "month")
     ya = ya.assign_coords(time=pd.DatetimeIndex(ya.time.values).to_period("M").to_timestamp())
     return ya, lat, lon, meta, np.asarray(yclim(np.arange(1, 13))).reshape(12, -1), mon
+
+
+def base_anomalies(mon, lat, lon, meta, var, min_full=27):
+    """기준망 평년(1991~2020) 보정 편차. 자료가 1991년부터 온전하지 않은 지점(대부분 1997~2002년 시작)은
+    가장 가까운 '온전한' 지점과의 공통 기간 차이(기온) 또는 비(강수, sqrt 공간)로 1991~2020 평년을 환산한다."""
+    c = mon.sel(time=slice(*esd.CLIM))
+    m = c["time.month"].values
+    raw = np.stack([np.nanmean(c.values[m == k], 0) for k in range(1, 13)])            # (12, npt) 자기 기간 평균
+    nyr = np.stack([np.isfinite(c.values[m == k]).sum(0) for k in range(1, 13)]).min(0)
+    full = nyr >= min_full
+    clim = raw.copy()
+    R = 6371.0; la, lo = np.deg2rad(lat), np.deg2rad(lon)
+    d = 2 * R * np.arcsin(np.sqrt(np.sin((la[:, None] - la[None]) / 2) ** 2
+                                  + np.cos(la[:, None]) * np.cos(la[None]) * np.sin((lo[:, None] - lo[None]) / 2) ** 2))
+    for j in np.where(~full)[0]:
+        cand = np.where(full)[0]; n = cand[np.argmin(d[j, cand])]
+        for k in range(1, 13):
+            both = (m == k) & np.isfinite(c.values[:, j]) & np.isfinite(c.values[:, n])
+            if both.sum() < 5:
+                continue
+            a, b = c.values[both, j].mean(), c.values[both, n].mean()
+            clim[k - 1, j] = raw[k - 1, n] * (a / b) if (var == "P" and b > 0) else raw[k - 1, n] + (a - b)
+    print(f"  평년 보정: {int((~full).sum())}지점 (이웃 온전 지점 기준)", flush=True)
+    mclim = xr.DataArray(clim, dims=("month", "pt"), coords={"month": np.arange(1, 13)})
+    clim_fn = lambda month: mclim.sel(month=np.atleast_1d(month)).values
+    return mon.groupby("time.month") - mclim, clim_fn
 
 
 def load_era5_anoms():

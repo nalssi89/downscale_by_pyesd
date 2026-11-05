@@ -55,7 +55,13 @@ def unzip_if_needed(p):
     if not zipfile.is_zipfile(p): return
     with tempfile.TemporaryDirectory() as td:
         zipfile.ZipFile(p).extractall(td)
-        ds = xr.merge([xr.open_dataset(x).load() for x in sorted(Path(td).glob("*.nc"))], compat="override")
+        parts = []
+        for x in sorted(Path(td).glob("*.nc")):
+            d = xr.open_dataset(x).load()
+            if "valid_time" in d.dims:              # stepType별로 시각이 다름(avgad 06시 등) → 월 시작으로 맞춤
+                d = d.assign_coords(valid_time=d.valid_time.values.astype("datetime64[M]").astype("datetime64[ns]"))
+            parts.append(d)
+        ds = xr.merge(parts, compat="override", join="outer")
         ds.to_netcdf(str(p) + ".tmp")
     os.replace(str(p) + ".tmp", p)
 def queue_full(rem):

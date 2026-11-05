@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1476pt" height="619.2pt" viewBox="0 0 1476 619.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-05T02:17:52.634945</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 619.2 
+L 1476 619.2 
+L 1476 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="line2d_1">
+    <path d="M 349.2 140.22624 
+L 365.4 140.22624 
+L 365.4 158.168 
+L 381.6 158.168 
+" clip-path="url(#p63730de486)" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 349.2 341.176 
+L 365.4 341.176 
+L 365.4 363.368 
+L 381.6 363.368 
+" clip-path="url(#p63730de486)" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 604.8 158.168 
+L 622.8 158.168 
+L 622.8 206.976 
+L 640.8 206.976 
+" clip-path="url(#p63730de486)" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 604.8 363.368 
+L 622.8 363.368 
+L 622.8 246.528 
+L 640.8 246.528 
+" clip-path="url(#p63730de486)" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_5">
+    <path d="M 795.6 266.304 
+L 795.6 338.4 
+" clip-path="url(#p63730de486)" style="fill: none; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_6">
+    <path d="M 950.4 377.952 
+L 968.4 377.952 
+L 968.4 182.28 
+L 986.4 182.28 
+" clip-path="url(#p63730de486)" style="fill: none; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_7">
+    <path d="M 1218.6 209.44 
+L 1218.6 313.2 
+" clip-path="url(#p63730de486)" style="fill: none; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_8">
+    <path d="M 1218.6 377.536 
+L 1218.6 435.6 
+" clip-path="url(#p63730de486)" style="fill: none; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_2">
+    <path d="M 365.4 158.168 
+Q 373.248853 158.168 379.664987 158.168 
+" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 374.164987 155.368 
+L 379.664987 158.168 
+L 374.164987 160.968 
+z
+" style="fill: #2a6fc4; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 365.4 363.368 
+Q 373.248853 363.368 379.664987 363.368 
+" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 374.164987 360.568 
+L 379.664987 363.368 
+L 374.164987 366.168 
+z
+" style="fill: #c8661d; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 622.8 206.976 
+Q 631.551709 206.976 638.8707 206.976 
+" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 633.3707 204.176 
+L 638.8707 206.976 
+L 633.3707 209.776 
+z
+" style="fill: #2a6fc4; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 622.8 246.528 
+Q 631.551709 246.528 638.8707 246.528 
+" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 633.3707 243.728 
+L 638.8707 246.528 
+L 633.3707 249.328 
+z
+" style="fill: #c8661d; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 795.6 266.304 
+Q 795.6 302.103378 795.6 336.470038 
+" style="fill: none; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 798.4 330.970038 
+L 795.6 336.470038 
+L 792.8 330.970038 
+z
+" style="fill: #6b55b0; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 968.4 182.28 
+Q 977.151709 182.28 984.4707 182.28 
+" style="fill: none; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 978.9707 179.48 
+L 984.4707 182.28 
+L 978.9707 185.08 
+z
+" style="fill: #6b55b0; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 1218.6 209.44 
+Q 1218.6 261.071429 1218.6 311.270141 
+" style="fill: none; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 1221.4 305.770141 
+L 1218.6 311.270141 
+L 1215.8 305.770141 
+z
+" style="fill: #6b55b0; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 1218.6 377.536 
+Q 1218.6 406.318152 1218.6 433.667585 
+" style="fill: none; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 1221.4 428.167585 
+L 1218.6 433.667585 
+L 1215.8 428.167585 
+z
+" style="fill: #6b55b0; stroke: #6b55b0; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 38.88 100.8 
+L 342.72 100.8 
+Q 349.2 100.8 349.2 107.28 
+L 349.2 188.192 
+Q 349.2 194.672 342.72 194.672 
+L 38.88 194.672 
+Q 32.4 194.672 32.4 188.192 
+L 32.4 107.28 
+Q 32.4 100.8 38.88 100.8 
+z
+" clip-path="url(#p63730de486)" style="fill: #ffffff; stroke: #2a6fc4; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 38.88 288 
+L 342.72 288 
+Q 349.2 288 349.2 294.48 
+L 349.2 414.46 
+Q 349.2 420.94 342.72 420.94 
+L 38.88 420.94 
+Q 32.4 420.94 32.4 414.46 
+L 32.4 294.48 
+Q 32.4 288 38.88 288 
+z
+" clip-path="url(#p63730de486)" style="fill: #ffffff; stroke: #c8661d; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 381.6 126 
+L 604.8 126 
+L 604.8 190.336 
+L 381.6 190.336 
+z
+" clip-path="url(#p63730de486)" style="fill: #f6f7f8; stroke: #2a6fc4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 381.6 331.2 
+L 604.8 331.2 
+L 604.8 395.536 
+L 381.6 395.536 
+z
+" clip-path="url(#p63730de486)" style="fill: #f6f7f8; stroke: #c8661d; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 647.28 187.2 
+L 943.92 187.2 
+Q 950.4 187.2 950.4 193.68 
+L 950.4 259.824 
+Q 950.4 266.304 943.92 266.304 
+L 647.28 266.304 
+Q 640.8 266.304 640.8 259.824 
+L 640.8 193.68 
+Q 640.8 187.2 647.28 187.2 
+z
+" clip-path="url(#p63730de486)" style="fill: #ffffff; stroke: #6b55b0; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 647.28 338.4 
+L 943.92 338.4 
+Q 950.4 338.4 950.4 344.88 
+L 950.4 411.024 
+Q 950.4 417.504 943.92 417.504 
+L 647.28 417.504 
+Q 640.8 417.504 640.8 411.024 
+L 640.8 344.88 
+Q 640.8 338.4 647.28 338.4 
+z
+" clip-path="url(#p63730de486)" style="fill: #ffffff; stroke: #6b55b0; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 986.4 100.8 
+L 1450.8 100.8 
+L 1450.8 209.44 
+L 986.4 209.44 
+z
+" clip-path="url(#p63730de486)" style="fill: #f6f7f8; stroke: #6b55b0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 992.88 313.2 
+L 1444.32 313.2 
+Q 1450.8 313.2 1450.8 319.68 
+L 1450.8 371.056 
+Q 1450.8 377.536 1444.32 377.536 
+L 992.88 377.536 
+Q 986.4 377.536 986.4 371.056 
+L 986.4 319.68 
+Q 986.4 313.2 992.88 313.2 
+z
+" clip-path="url(#p63730de486)" style="fill: #ffffff; stroke: #6b55b0; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 990.72 435.6 
+L 1446.48 435.6 
+Q 1450.8 435.6 1450.8 439.92 
+L 1450.8 525.152 
+Q 1450.8 529.472 1446.48 529.472 
+L 990.72 529.472 
+Q 986.4 529.472 986.4 525.152 
+L 986.4 439.92 
+Q 986.4 435.6 990.72 435.6 
+z
+" clip-path="url(#p63730de486)" style="fill: #6b55b0; fill-opacity: 0.05098; stroke-dasharray: 4.4,2.75; stroke-dashoffset: 0; stroke: #6b55b0; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 36.72 529.2 
+L 946.08 529.2 
+Q 950.4 529.2 950.4 533.52 
+L 950.4 589.216 
+Q 950.4 593.536 946.08 593.536 
+L 36.72 593.536 
+Q 32.4 593.536 32.4 589.216 
+L 32.4 533.52 
+Q 32.4 529.2 36.72 529.2 
+z
+" clip-path="url(#p63730de486)" style="fill: #7d8790; fill-opacity: 0.05098; stroke-dasharray: 4.4,2.75; stroke-dashoffset: 0; stroke: #7d8790; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 38.88 100.8 
+L 342.72 100.8 
+Q 349.2 100.8 349.2 107.28 
+L 349.2 121.92 
+Q 349.2 128.4 342.72 128.4 
+L 38.88 128.4 
+Q 32.4 128.4 32.4 121.92 
+L 32.4 107.28 
+Q 32.4 100.8 38.88 100.8 
+z
+" clip-path="url(#p63730de486)" style="fill: #2a6fc4; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 38.88 288 
+L 342.72 288 
+Q 349.2 288 349.2 294.48 
+L 349.2 309.12 
+Q 349.2 315.6 342.72 315.6 
+L 38.88 315.6 
+Q 32.4 315.6 32.4 309.12 
+L 32.4 294.48 
+Q 32.4 288 38.88 288 
+z
+" clip-path="url(#p63730de486)" style="fill: #c8661d; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_22">
+    <path d="M 647.28 187.2 
+L 943.92 187.2 
+Q 950.4 187.2 950.4 193.68 
+L 950.4 208.32 
+Q 950.4 214.8 943.92 214.8 
+L 647.28 214.8 
+Q 640.8 214.8 640.8 208.32 
+L 640.8 193.68 
+Q 640.8 187.2 647.28 187.2 
+z
+" clip-path="url(#p63730de486)" style="fill: #6b55b0; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_23">
+    <path d="M 647.28 338.4 
+L 943.92 338.4 
+Q 950.4 338.4 950.4 344.88 
+L 950.4 359.52 
+Q 950.4 366 943.92 366 
+L 647.28 366 
+Q 640.8 366 640.8 359.52 
+L 640.8 344.88 
+Q 640.8 338.4 647.28 338.4 
+z
+" clip-path="url(#p63730de486)" style="fill: #6b55b0; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_24">
+    <path d="M 992.88 313.2 
+L 1444.32 313.2 
+Q 1450.8 313.2 1450.8 319.68 
+L 1450.8 334.32 
+Q 1450.8 340.8 1444.32 340.8 
+L 992.88 340.8 
+Q 986.4 340.8 986.4 334.32 
+L 986.4 319.68 
+Q 986.4 313.2 992.88 313.2 
+z
+" clip-path="url(#p63730de486)" style="fill: #6b55b0; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_25">
+    <path d="M 381.6 126 
+L 386.64 126 
+L 386.64 190.336 
+L 381.6 190.336 
+z
+" clip-path="url(#p63730de486)" style="fill: #2a6fc4"/>
+   </g>
+   <g id="patch_26">
+    <path d="M 381.6 331.2 
+L 386.64 331.2 
+L 386.64 395.536 
+L 381.6 395.536 
+z
+" clip-path="url(#p63730de486)" style="fill: #c8661d"/>
+   </g>
+   <g id="patch_27">
+    <path d="M 986.4 100.8 
+L 991.44 100.8 
+L 991.44 209.44 
+L 986.4 209.44 
+z
+" clip-path="url(#p63730de486)" style="fill: #6b55b0"/>
+   </g>
+   <g id="patch_28">
+    <path d="M 595.44 126 
+L 604.8 135.36 
+L 595.44 135.36 
+z
+" clip-path="url(#p63730de486)" style="fill: #2a6fc4; fill-opacity: 0.333333; stroke: #2a6fc4; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_29">
+    <path d="M 595.44 331.2 
+L 604.8 340.56 
+L 595.44 340.56 
+z
+" clip-path="url(#p63730de486)" style="fill: #c8661d; fill-opacity: 0.333333; stroke: #c8661d; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_30">
+    <path d="M 1441.44 100.8 
+L 1450.8 110.16 
+L 1441.44 110.16 
+z
+" clip-path="url(#p63730de486)" style="fill: #6b55b0; fill-opacity: 0.333333; stroke: #6b55b0; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="25.2" y="35.04" transform="rotate(-0 25.2 35.04)">7단계 · 자동 실행·게시</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 9.5px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #4b5560" x="25.2" y="59.01" transform="rotate(-0 25.2 59.01)">GitHub Actions가 산출을 결과 브랜치에 올리면 사이트 게시 워크플로가 이어서 변환해 gh-pages로 배포 (Pages: gh-pages / root)</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #2a6fc4" x="40.32" y="118.83" transform="rotate(-0 40.32 118.83)">ec46_weekly.yml</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="138.904" transform="rotate(-0 40.32 138.904)">매일 09:30 UTC (18:30 KST)</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="153.672" transform="rotate(-0 40.32 153.672)">pip install -r requirements.txt</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="168.44" transform="rotate(-0 40.32 168.44)">forecast.py --maps</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="183.208" transform="rotate(-0 40.32 183.208)">(numpy·scipy만, 학습 npz 사용)</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #c8661d" x="40.32" y="306.03" transform="rotate(-0 40.32 306.03)">seas5_monthly.yml</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="326.104" transform="rotate(-0 40.32 326.104)">매월 14일 03:00 UTC</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="340.872" transform="rotate(-0 40.32 340.872)">(SEAS5 13일 공개 다음 날)</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="355.64" transform="rotate(-0 40.32 355.64)">초기화 달·연도 결정</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="370.408" transform="rotate(-0 40.32 370.408)">get_cds.py --only seas5 --no-hind</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="385.176" transform="rotate(-0 40.32 385.176)">forecast.py --leads 2,3,4 --maps</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans Mono', 'NanumGothic'; text-anchor: start; fill: #c8661d" x="40.32" y="408.337891" transform="rotate(-0 40.32 408.337891)">secret: CDSAPI_KEY</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="393.12" y="144.12" transform="rotate(-0 393.12 144.12)">out-ec46</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="393.12" y="164.104" transform="rotate(-0 393.12 164.104)">단일 커밋 브랜치</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="393.12" y="178.872" transform="rotate(-0 393.12 178.872)">downscaling.json</text>
+   </g>
+   <g id="text_18">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="393.12" y="349.32" transform="rotate(-0 393.12 349.32)">out-seas5</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="393.12" y="369.304" transform="rotate(-0 393.12 369.304)">단일 커밋 브랜치</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="393.12" y="384.072" transform="rotate(-0 393.12 384.072)">downscaling.json</text>
+   </g>
+   <g id="text_21">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #6b55b0" x="648.72" y="205.23" transform="rotate(-0 648.72 205.23)">site.yml (사이트 게시)</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="648.72" y="225.304" transform="rotate(-0 648.72 225.304)">workflow_run: 두 워크플로 완료 시</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="648.72" y="240.072" transform="rotate(-0 648.72 240.072)">최신 산출 가져오기</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="648.72" y="254.84" transform="rotate(-0 648.72 254.84)">(없는 쪽은 건너뜀)</text>
+   </g>
+   <g id="text_25">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #6b55b0" x="648.72" y="356.43" transform="rotate(-0 648.72 356.43)">build_site_data.py</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="648.72" y="376.504" transform="rotate(-0 648.72 376.504)">downscaling.json → 사이트 형식</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="648.72" y="391.272" transform="rotate(-0 648.72 391.272)">기온 °C 평균 · 강수 mm 누적</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="648.72" y="406.04" transform="rotate(-0 648.72 406.04)">확률은 정수 %</text>
+   </g>
+   <g id="text_29">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="997.92" y="118.92" transform="rotate(-0 997.92 118.92)">site/data (생성)</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="997.92" y="138.904" transform="rotate(-0 997.92 138.904)">grid.json  0.25° 412격자 step·lats·lons·fill_index</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="997.92" y="153.672" transform="rotate(-0 997.92 153.672)">latest/manifest.json  발표 시각·기간 목록</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="997.92" y="168.44" transform="rotate(-0 997.92 168.44)">map_1m.json (EC46 1~4주) · map_3m.json (SEAS5 3개월)</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="997.92" y="183.208" transform="rotate(-0 997.92 183.208)">stations.json  ASOS 66 field + 남한 62지점 평균</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="997.92" y="197.976" transform="rotate(-0 997.92 197.976)">points/&lt;i&gt;.json · stations/&lt;stn&gt;.json  지점 상세</text>
+   </g>
+   <g id="text_35">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #6b55b0" x="994.32" y="331.182187" transform="rotate(-0 994.32 331.182187)">gh-pages → GitHub Pages</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="994.32" y="351.304" transform="rotate(-0 994.32 351.304)">https://nalssi89.github.io/downscale_by_pyesd/</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="994.32" y="366.072" transform="rotate(-0 994.32 366.072)">index.html · point.html · js/ · css/ · vendor/leaflet</text>
+   </g>
+   <g id="text_38">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #6b55b0" x="994.32" y="453.612187" transform="rotate(-0 994.32 453.612187)">화면 (objective_climate_outlook 형식)</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="994.32" y="473.704" transform="rotate(-0 994.32 473.704)">영역: 남한(기본) · 한반도  |  전망: 1개월 · 3개월</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="994.32" y="488.472" transform="rotate(-0 994.32 488.472)">요소: 기온 · 강수  |  기간: 주 · 월</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="994.32" y="503.24" transform="rotate(-0 994.32 503.24)">표출: 3분위 우세범주 · 중앙값 초과 · 앙상블 평균</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="994.32" y="518.008" transform="rotate(-0 994.32 518.008)">  평년편차 · 임계값 · 극한 확률 · 스프레드, 지점 상세 창</text>
+   </g>
+   <g id="text_43">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #7d8790" x="40.32" y="547.32" transform="rotate(-0 40.32 547.32)">운영에 필요한 것</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="567.304" transform="rotate(-0 40.32 567.304)">저장소 secret CDSAPI_KEY (SEAS5) — 코드·파일에 키를 쓰지 않음 · EC46은 키 불필요 (Open-Meteo)</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="40.32" y="582.072" transform="rotate(-0 40.32 582.072)">학습 모형 npz와 clim_init{mm}.nc 는 학습 환경에서 만들어 저장소에 둠 (재학습은 수동)</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 7.5px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: end; fill: #7d8790" x="1454.4" y="605.61" transform="rotate(-0 1454.4 605.61)">nalssi89/downscale_by_pyesd · docs/design/make_flowchart.py</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p63730de486">
+   <rect x="0" y="0" width="1476" height="619.2"/>
+  </clipPath>
+ </defs>
+</svg>

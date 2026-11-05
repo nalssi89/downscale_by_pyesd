@@ -104,9 +104,9 @@ def _ord(x):
     n = x[0]
     if "era5_pl_2026" in n: return 0                       # 이미 대기 중
     if "_hind_10_" in n: return 1
-    if n.startswith("parts/"): return 2
-    if "_hind_11_" in n: return 3
-    if "_fc" in n and "_10_" in n: return 4
+    if "_fc" in n and "_10_" in n: return 2
+    if n.startswith("parts/"): return 3
+    if "_hind_11_" in n: return 4
     return 5                                               # 11월 실황(13일 공개)
 lanes.get("main", []).sort(key=_ord)
 if os.environ.get("DRY"):

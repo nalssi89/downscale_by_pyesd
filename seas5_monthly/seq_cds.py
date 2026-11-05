@@ -110,7 +110,16 @@ def _ord(x):
     if n.startswith("parts/"): return 3
     if "_hind_11_" in n: return 4
     return 5                                               # 11월 실황(13일 공개)
-lanes.get("main", []).sort(key=_ord)
+def _size(x):
+    """예상 크기 = CDS 비용(필드 수) × 영역 격자점 수 (× 멤버 수). 작은 것부터 받는다 (사용자 지시 2026-11-05)."""
+    r = x[2][0] if isinstance(x[2], list) else x[2]
+    try: cost = c.estimate_costs(x[1], r)["cost"]
+    except Exception: cost = 1e9
+    n, w, s_, e = r.get("area", [90, 0, -90, 360]); gr = r.get("grid", [1, 1])[0]
+    pts = ((n - s_) / gr + 1) * ((e - w) / gr + 1)
+    mem = (25 if len(r.get("year", [])) > 1 else 51) if x[1].startswith("seasonal") else 1
+    return cost * pts * mem
+lanes.get("main", []).sort(key=lambda x: (not any((x[1], norm(r)) in existing for r in (x[2] if isinstance(x[2], list) else [x[2]])), _size(x)))   # CDS에 이미 올라간 건 먼저
 if os.environ.get("DRY"):
     [print(k, x[0]) for k, v in lanes.items() for x in v]; sys.exit()
 print({k: len(v) for k, v in lanes.items()}, flush=True)

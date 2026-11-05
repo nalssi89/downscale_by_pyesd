@@ -43,6 +43,8 @@ for x in sc.requests([int(m) for m in init.split(",")], fy):
 # 이미 CDS에 대기 중인 요청을 앞으로
 reqs.sort(key=lambda x: 0 if any((x[1], norm(r)) in existing for r in (x[2] if isinstance(x[2], list) else [x[2]])) else 1)
 todo = [x for x in reqs if not ((out / x[0]).exists() and (out / x[0]).stat().st_size > 0)]
+if os.environ.get("CUR_YEAR_SAFE"):                # 올해 분: 전달까지(1~nm)가 MARS 오류로 실패했으면 한 달 줄인 요청부터
+    todo = [(n, d, r[1:] if isinstance(r, list) and len(r) > 1 else r) for n, d, r in todo]
 if os.environ.get("SKIP_RE"):                      # 다른 경로(ARCO 등)로 만드는 파일은 제외. 예: SKIP_RE=_2026\.nc$
     import re; todo = [x for x in todo if not re.search(os.environ["SKIP_RE"], x[0])]
 print(f"{len(todo)} to fetch sequentially", flush=True)

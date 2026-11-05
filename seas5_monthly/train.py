@@ -1,6 +1,6 @@
 """SEAS5 월별 체계 전이함수 학습 — PyESD 원본형 (점별 ARD 회귀, 자동 인자선택).
 
-  KDS_WORK=... CDS_DIR=... python seas5_monthly/train.py [grid|asos] [T|P]
+  KDS_WORK=... CDS_DIR=... python seas5_monthly/train.py [grid|asos|base] [T|P]
 
 입력: ERA5 1° 예측인자(CDS_DIR/era5_*.nc, predictors.py), 예측대상 월평균(KDS_WORK/target_grid.nc 412격자, target_asos.nc 66지점)
 방법: 달별(±1개월 창) 표본에 대해 EOF 적합 → 설계행렬 (지역평균 12 + 기후지수(자료에 따라 7~16) + EOF PC 9) 열 표준화 → 점별 ARDRegression
@@ -34,11 +34,14 @@ def load_target(kind, var):
         lat, lon = st.lat.values, st.lon.values
         da = xr.DataArray(st.values, dims=("time", "pt"), coords={"time": st.time.values}); meta = {}
     else:
-        ds = xr.open_dataset(WORK / "target_asos.nc")
+        # asos: ASOS 66지점 일자료(target_asos.nc) / base: 기준망 83지점 월자료(target_base.nc, training/build_base_network.py)
+        ds = xr.open_dataset(WORK / ("target_base.nc" if kind == "base" else "target_asos.nc"))
         da = ds[var].rename(stn="pt"); lat, lon = ds.lat.values, ds.lon.values
         meta = dict(stn=ds.stn.values, name=ds.name.values.astype(str), jeju=ds.jeju.values)
+        if "asos66" in ds:
+            meta["asos66"] = ds.asos66.values
         da = da.drop_vars([c for c in da.coords if c != "time"])
-    mon = esd.transform(esd.aggregate(da, "month"), var)
+    mon = esd.transform(da if kind == "base" else esd.aggregate(da, "month"), var)   # base 는 이미 월자료
     ya, yclim = esd.anomalies(mon, "month")
     ya = ya.assign_coords(time=pd.DatetimeIndex(ya.time.values).to_period("M").to_timestamp())
     return ya, lat, lon, meta, np.asarray(yclim(np.arange(1, 13))).reshape(12, -1), mon

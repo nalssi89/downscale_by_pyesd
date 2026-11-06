@@ -83,8 +83,9 @@ def merge_era5(out, final, parts):
     miss = [p for p in fs if not p.exists()]
     if miss:
         return f"merge skip {final}: missing {[m.name for m in miss]}"
-    ds = xr.open_mfdataset(fs, combine="by_coords", compat="override", coords="minimal")
-    ds.load().to_netcdf(f)
+    ds = [xr.open_dataset(p).load() for p in fs]
+    ds = [d.drop_vars([c for c in ("expver", "number") if c in d.variables]) for d in ds]   # 부분마다 expver 유무가 다름
+    xr.concat(ds, "valid_time").sortby("valid_time").to_netcdf(f)
     return f"merged {final} {f.stat().st_size // 1024} KB"
 
 

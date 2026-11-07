@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1476pt" height="669.6pt" viewBox="0 0 1476 669.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-05T02:17:50.549215</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 669.6 
+L 1476 669.6 
+L 1476 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 624.24 79.2 
+L 1449.36 79.2 
+Q 1458 79.2 1458 87.84 
+L 1458 315.36 
+Q 1458 324 1449.36 324 
+L 624.24 324 
+Q 615.6 324 615.6 315.36 
+L 615.6 87.84 
+Q 615.6 79.2 624.24 79.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #2a6fc4; fill-opacity: 0.043137; stroke: #2a6fc4; stroke-opacity: 0.333333; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 624.24 338.4 
+L 1449.36 338.4 
+Q 1458 338.4 1458 347.04 
+L 1458 585.36 
+Q 1458 594 1449.36 594 
+L 624.24 594 
+Q 615.6 594 615.6 585.36 
+L 615.6 347.04 
+Q 615.6 338.4 624.24 338.4 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #c8661d; fill-opacity: 0.043137; stroke: #c8661d; stroke-opacity: 0.333333; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #2a6fc4" x="627.12" y="96.9" transform="rotate(-0 627.12 96.9)">EC46 · 능형회귀</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #c8661d" x="627.12" y="356.0175" transform="rotate(-0 627.12 356.0175)">SEAS5 · ARD (PyESD 원본형)</text>
+   </g>
+   <g id="patch_4">
+    <path d="M 36 637.2 
+L 54.72 637.2 
+Q 58.32 637.2 58.32 640.8 
+L 58.32 648 
+Q 58.32 651.6 54.72 651.6 
+L 36 651.6 
+Q 32.4 651.6 32.4 648 
+L 32.4 640.8 
+Q 32.4 637.2 36 637.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #ffffff; stroke: #4b5560; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 113.52 637.2 
+L 139.44 637.2 
+L 139.44 651.6 
+L 113.52 651.6 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #f6f7f8; stroke: #4b5560; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 113.52 637.2 
+L 117.12 637.2 
+L 117.12 651.6 
+L 113.52 651.6 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #4b5560"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 202 637.2 
+L 222.16 637.2 
+Q 225.04 637.2 225.04 640.08 
+L 225.04 648.72 
+Q 225.04 651.6 222.16 651.6 
+L 202 651.6 
+Q 199.12 651.6 199.12 648.72 
+L 199.12 640.08 
+Q 199.12 637.2 202 637.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #7d8790; fill-opacity: 0.05098; stroke-dasharray: 3,2; stroke-dashoffset: 0; stroke: #7d8790; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 270 132.968 
+L 286.2 132.968 
+L 286.2 159.886 
+L 302.4 159.886 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #2f8a57; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 270 230.168 
+L 286.2 230.168 
+L 286.2 189.429 
+L 302.4 189.429 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #4b5560; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 889.2 166.902 
+L 907.2 166.902 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 1166.4 166.902 
+L 1184.4 166.902 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_5">
+    <path d="M 889.2 426.102 
+L 907.2 426.102 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_6">
+    <path d="M 1166.4 426.102 
+L 1184.4 426.102 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_7">
+    <path d="M 590.4 136.2516 
+L 604.8 136.2516 
+L 604.8 166.902 
+L 630 166.902 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_8">
+    <path d="M 590.4 183.5204 
+L 604.8 183.5204 
+L 604.8 426.102 
+L 630 426.102 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_9">
+    <path d="M 668.88 218.604 
+L 668.88 331.2 
+L 415.44 331.2 
+L 415.44 374.4 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_10">
+    <path d="M 630 426.102 
+L 604.8 426.102 
+L 604.8 412.424 
+L 579.6 412.424 
+" clip-path="url(#p4a22b3717b)" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 286.2 159.886 
+Q 294.048853 159.886 300.464987 159.886 
+" style="fill: none; stroke: #2f8a57; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 294.964987 157.086 
+L 300.464987 159.886 
+L 294.964987 162.686 
+z
+" style="fill: #2f8a57; stroke: #2f8a57; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 286.2 189.429 
+Q 294.048853 189.429 300.464987 189.429 
+" style="fill: none; stroke: #4b5560; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 294.964987 186.629 
+L 300.464987 189.429 
+L 294.964987 192.229 
+z
+" style="fill: #4b5560; stroke: #4b5560; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 889.2 166.902 
+Q 897.951709 166.902 905.2707 166.902 
+" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 899.7707 164.102 
+L 905.2707 166.902 
+L 899.7707 169.702 
+z
+" style="fill: #2a6fc4; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 1166.4 166.902 
+Q 1175.151709 166.902 1182.4707 166.902 
+" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 1176.9707 164.102 
+L 1182.4707 166.902 
+L 1176.9707 169.702 
+z
+" style="fill: #2a6fc4; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 889.2 426.102 
+Q 897.951709 426.102 905.2707 426.102 
+" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 899.7707 423.302 
+L 905.2707 426.102 
+L 899.7707 428.902 
+z
+" style="fill: #c8661d; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 1166.4 426.102 
+Q 1175.151709 426.102 1182.4707 426.102 
+" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 1176.9707 423.302 
+L 1182.4707 426.102 
+L 1176.9707 428.902 
+z
+" style="fill: #c8661d; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 604.8 166.902 
+Q 617.149292 166.902 628.065866 166.902 
+" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 622.565866 164.102 
+L 628.065866 166.902 
+L 622.565866 169.702 
+z
+" style="fill: #2a6fc4; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 604.8 426.102 
+Q 617.149292 426.102 628.065866 426.102 
+" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 622.565866 423.302 
+L 628.065866 426.102 
+L 622.565866 428.902 
+z
+" style="fill: #c8661d; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 415.44 331.2 
+Q 415.44 352.55083 415.44 372.468942 
+" style="fill: none; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 418.24 366.968942 
+L 415.44 372.468942 
+L 412.64 366.968942 
+z
+" style="fill: #2a6fc4; stroke: #2a6fc4; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 604.8 412.424 
+Q 592.450708 412.424 581.534134 412.424 
+" style="fill: none; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 587.034134 415.224 
+L 581.534134 412.424 
+L 587.034134 409.624 
+z
+" style="fill: #c8661d; stroke: #c8661d; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 32.4 100.8 
+L 270 100.8 
+L 270 165.136 
+L 32.4 165.136 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #f6f7f8; stroke: #2f8a57; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 32.4 198 
+L 270 198 
+L 270 262.336 
+L 32.4 262.336 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #f6f7f8; stroke: #7d8790; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 308.88 100.8 
+L 583.92 100.8 
+Q 590.4 100.8 590.4 107.28 
+L 590.4 212.492 
+Q 590.4 218.972 583.92 218.972 
+L 308.88 218.972 
+Q 302.4 218.972 302.4 212.492 
+L 302.4 107.28 
+Q 302.4 100.8 308.88 100.8 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #ffffff; stroke: #4b5560; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 636.48 115.2 
+L 882.72 115.2 
+Q 889.2 115.2 889.2 121.68 
+L 889.2 212.124 
+Q 889.2 218.604 882.72 218.604 
+L 636.48 218.604 
+Q 630 218.604 630 212.124 
+L 630 121.68 
+Q 630 115.2 636.48 115.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #ffffff; stroke: #2a6fc4; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_22">
+    <path d="M 913.68 115.2 
+L 1159.92 115.2 
+Q 1166.4 115.2 1166.4 121.68 
+L 1166.4 212.124 
+Q 1166.4 218.604 1159.92 218.604 
+L 913.68 218.604 
+Q 907.2 218.604 907.2 212.124 
+L 907.2 121.68 
+Q 907.2 115.2 913.68 115.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #ffffff; stroke: #2a6fc4; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_23">
+    <path d="M 1190.88 115.2 
+L 1437.12 115.2 
+Q 1443.6 115.2 1443.6 121.68 
+L 1443.6 212.124 
+Q 1443.6 218.604 1437.12 218.604 
+L 1190.88 218.604 
+Q 1184.4 218.604 1184.4 212.124 
+L 1184.4 121.68 
+Q 1184.4 115.2 1190.88 115.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #ffffff; stroke: #2a6fc4; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_24">
+    <path d="M 911.52 237.6 
+L 1439.28 237.6 
+Q 1443.6 237.6 1443.6 241.92 
+L 1443.6 305.312 
+Q 1443.6 309.632 1439.28 309.632 
+L 911.52 309.632 
+Q 907.2 309.632 907.2 305.312 
+L 907.2 241.92 
+Q 907.2 237.6 911.52 237.6 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #2a6fc4; fill-opacity: 0.05098; stroke-dasharray: 4.4,2.75; stroke-dashoffset: 0; stroke: #2a6fc4; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_25">
+    <path d="M 636.48 374.4 
+L 882.72 374.4 
+Q 889.2 374.4 889.2 380.88 
+L 889.2 471.324 
+Q 889.2 477.804 882.72 477.804 
+L 636.48 477.804 
+Q 630 477.804 630 471.324 
+L 630 380.88 
+Q 630 374.4 636.48 374.4 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #ffffff; stroke: #c8661d; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_26">
+    <path d="M 913.68 374.4 
+L 1159.92 374.4 
+Q 1166.4 374.4 1166.4 380.88 
+L 1166.4 471.324 
+Q 1166.4 477.804 1159.92 477.804 
+L 913.68 477.804 
+Q 907.2 477.804 907.2 471.324 
+L 907.2 380.88 
+Q 907.2 374.4 913.68 374.4 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #ffffff; stroke: #c8661d; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_27">
+    <path d="M 1190.88 374.4 
+L 1437.12 374.4 
+Q 1443.6 374.4 1443.6 380.88 
+L 1443.6 471.324 
+Q 1443.6 477.804 1437.12 477.804 
+L 1190.88 477.804 
+Q 1184.4 477.804 1184.4 471.324 
+L 1184.4 380.88 
+Q 1184.4 374.4 1190.88 374.4 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #ffffff; stroke: #c8661d; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_28">
+    <path d="M 634.32 514.8 
+L 1439.28 514.8 
+Q 1443.6 514.8 1443.6 519.12 
+L 1443.6 552.976 
+Q 1443.6 557.296 1439.28 557.296 
+L 634.32 557.296 
+Q 630 557.296 630 552.976 
+L 630 519.12 
+Q 630 514.8 634.32 514.8 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #c8661d; fill-opacity: 0.05098; stroke-dasharray: 4.4,2.75; stroke-dashoffset: 0; stroke: #c8661d; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_29">
+    <path d="M 32.4 374.4 
+L 579.6 374.4 
+L 579.6 483.04 
+L 32.4 483.04 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #f6f7f8; stroke: #4b5560; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_30">
+    <path d="M 308.88 100.8 
+L 583.92 100.8 
+Q 590.4 100.8 590.4 107.28 
+L 590.4 121.92 
+Q 590.4 128.4 583.92 128.4 
+L 308.88 128.4 
+Q 302.4 128.4 302.4 121.92 
+L 302.4 107.28 
+Q 302.4 100.8 308.88 100.8 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #4b5560; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_31">
+    <path d="M 636.48 115.2 
+L 882.72 115.2 
+Q 889.2 115.2 889.2 121.68 
+L 889.2 136.32 
+Q 889.2 142.8 882.72 142.8 
+L 636.48 142.8 
+Q 630 142.8 630 136.32 
+L 630 121.68 
+Q 630 115.2 636.48 115.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #2a6fc4; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_32">
+    <path d="M 913.68 115.2 
+L 1159.92 115.2 
+Q 1166.4 115.2 1166.4 121.68 
+L 1166.4 136.32 
+Q 1166.4 142.8 1159.92 142.8 
+L 913.68 142.8 
+Q 907.2 142.8 907.2 136.32 
+L 907.2 121.68 
+Q 907.2 115.2 913.68 115.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #2a6fc4; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_33">
+    <path d="M 1190.88 115.2 
+L 1437.12 115.2 
+Q 1443.6 115.2 1443.6 121.68 
+L 1443.6 136.32 
+Q 1443.6 142.8 1437.12 142.8 
+L 1190.88 142.8 
+Q 1184.4 142.8 1184.4 136.32 
+L 1184.4 121.68 
+Q 1184.4 115.2 1190.88 115.2 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #2a6fc4; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_34">
+    <path d="M 636.48 374.4 
+L 882.72 374.4 
+Q 889.2 374.4 889.2 380.88 
+L 889.2 395.52 
+Q 889.2 402 882.72 402 
+L 636.48 402 
+Q 630 402 630 395.52 
+L 630 380.88 
+Q 630 374.4 636.48 374.4 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #c8661d; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_35">
+    <path d="M 913.68 374.4 
+L 1159.92 374.4 
+Q 1166.4 374.4 1166.4 380.88 
+L 1166.4 395.52 
+Q 1166.4 402 1159.92 402 
+L 913.68 402 
+Q 907.2 402 907.2 395.52 
+L 907.2 380.88 
+Q 907.2 374.4 913.68 374.4 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #c8661d; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_36">
+    <path d="M 1190.88 374.4 
+L 1437.12 374.4 
+Q 1443.6 374.4 1443.6 380.88 
+L 1443.6 395.52 
+Q 1443.6 402 1437.12 402 
+L 1190.88 402 
+Q 1184.4 402 1184.4 395.52 
+L 1184.4 380.88 
+Q 1184.4 374.4 1190.88 374.4 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #c8661d; fill-opacity: 0.121569"/>
+   </g>
+   <g id="patch_37">
+    <path d="M 32.4 100.8 
+L 37.44 100.8 
+L 37.44 165.136 
+L 32.4 165.136 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #2f8a57"/>
+   </g>
+   <g id="patch_38">
+    <path d="M 32.4 198 
+L 37.44 198 
+L 37.44 262.336 
+L 32.4 262.336 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #7d8790"/>
+   </g>
+   <g id="patch_39">
+    <path d="M 32.4 374.4 
+L 37.44 374.4 
+L 37.44 483.04 
+L 32.4 483.04 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #4b5560"/>
+   </g>
+   <g id="patch_40">
+    <path d="M 260.64 100.8 
+L 270 110.16 
+L 260.64 110.16 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #2f8a57; fill-opacity: 0.333333; stroke: #2f8a57; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_41">
+    <path d="M 260.64 198 
+L 270 207.36 
+L 260.64 207.36 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #7d8790; fill-opacity: 0.333333; stroke: #7d8790; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_42">
+    <path d="M 570.24 374.4 
+L 579.6 383.76 
+L 570.24 383.76 
+z
+" clip-path="url(#p4a22b3717b)" style="fill: #4b5560; fill-opacity: 0.333333; stroke: #4b5560; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="25.2" y="35.0475" transform="rotate(-0 25.2 35.0475)">4단계 · 전이함수 학습·검증</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9.5px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #4b5560" x="25.2" y="59.01" transform="rotate(-0 25.2 59.01)">대상(격자 412 | ASOS 66) × 요소(T | P) × 달(1~12)[× 주·월] 마다 점별 회귀 — EOF까지 폴드 안에서 다시 계산해 정보 누설 방지</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="118.967813" transform="rotate(-0 43.92 118.967813)">예측대상 편차</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="138.904" transform="rotate(-0 43.92 138.904)">target_grid.nc (412)</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="153.672" transform="rotate(-0 43.92 153.672)">target_asos.nc (66)</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="216.167812" transform="rotate(-0 43.92 216.167812)">예측인자</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="236.104" transform="rotate(-0 43.92 236.104)">EC46: pred.nc 247점</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="250.872" transform="rotate(-0 43.92 250.872)">SEAS5: ERA5 1° 편차장</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #4b5560" x="310.32" y="118.92" transform="rotate(-0 310.32 118.92)">반복 단위</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="310.32" y="138.904" transform="rotate(-0 310.32 138.904)">kind ∈ {grid, asos}</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="310.32" y="153.672" transform="rotate(-0 310.32 153.672)">var ∈ {T, P}</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="310.32" y="168.44" transform="rotate(-0 310.32 168.44)">month 1~12 (±1개월 창 표본)</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="310.32" y="183.208" transform="rotate(-0 310.32 183.208)">EC46은 scale ∈ {week, month}</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans Mono', 'NanumGothic'; text-anchor: start; fill: #4b5560" x="310.32" y="206.370242" transform="rotate(-0 310.32 206.370242)">esd.season_window</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #2a6fc4" x="637.92" y="133.32" transform="rotate(-0 637.92 133.32)">교차검증</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="637.92" y="153.304" transform="rotate(-0 637.92 153.304)">leave-one-year-out</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="637.92" y="168.072" transform="rotate(-0 637.92 168.072)">폴드마다 EOF 재적합</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="637.92" y="182.84" transform="rotate(-0 637.92 182.84)">+ 독립 검증 2023–2026</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans Mono', 'NanumGothic'; text-anchor: start; fill: #2a6fc4" x="637.92" y="206.002242" transform="rotate(-0 637.92 206.002242)">training/train.py</text>
+   </g>
+   <g id="text_22">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #2a6fc4" x="915.12" y="133.32" transform="rotate(-0 915.12 133.32)">능형회귀 (배치)</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="153.304" transform="rotate(-0 915.12 153.304)">열 표준화 후 점별 해</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="168.072" transform="rotate(-0 915.12 168.072)">α ∈ {1, 10, 100, 1000}</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="182.84" transform="rotate(-0 915.12 182.84)">연도 5묶음 CV로 α 선택</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans Mono', 'NanumGothic'; text-anchor: start; fill: #2a6fc4" x="915.12" y="206.002242" transform="rotate(-0 915.12 206.002242)">esd.fit_points · _ridge_batch</text>
+   </g>
+   <g id="text_27">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #2a6fc4" x="1192.32" y="133.32" transform="rotate(-0 1192.32 133.32)">최종 모형</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="1192.32" y="153.304" transform="rotate(-0 1192.32 153.304)">전 기간 재적합</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="1192.32" y="168.072" transform="rotate(-0 1192.32 168.072)">→ numpy 전용 npz</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="1192.32" y="182.84" transform="rotate(-0 1192.32 182.84)">EOF·계수·σ·q10/q50/q90</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans Mono', 'NanumGothic'; text-anchor: start; fill: #2a6fc4" x="1192.32" y="206.026148" transform="rotate(-0 1192.32 206.026148)">export_models.py</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="253.864" transform="rotate(-0 915.12 253.864)">CV 상관(재분석 입력) 격자 기온 주 0.97 · 월 0.95, 강수 0.92 · 0.90</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="268.632" transform="rotate(-0 915.12 268.632)">ASOS 기온 0.95 · 0.90, 강수 0.87 · 0.81</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="283.4" transform="rotate(-0 915.12 283.4)">모형 비교(ASOS 월 MSESS): ARD 1위 (T 0.87 · P 0.65)</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="298.168" transform="rotate(-0 915.12 298.168)">Lasso·Ridge 동급 → 운영은 계산이 빠른 Ridge</text>
+   </g>
+   <g id="text_36">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #c8661d" x="637.92" y="392.532187" transform="rotate(-0 637.92 392.532187)">5년 블록 교차검증</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="637.92" y="412.504" transform="rotate(-0 637.92 412.504)">1991–2025, 7개 블록</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="637.92" y="427.272" transform="rotate(-0 637.92 427.272)">폴드마다 EOF·패턴·회귀</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="637.92" y="442.04" transform="rotate(-0 637.92 442.04)">모두 재적합</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans Mono', 'NanumGothic'; text-anchor: start; fill: #c8661d" x="637.92" y="465.226148" transform="rotate(-0 637.92 465.226148)">seas5_monthly/train.py</text>
+   </g>
+   <g id="text_41">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #c8661d" x="915.12" y="392.382187" transform="rotate(-0 915.12 392.382187)">ARDRegression</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="412.504" transform="rotate(-0 915.12 412.504)">점별 병렬 (joblib)</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="427.272" transform="rotate(-0 915.12 427.272)">관련 없는 인자 계수 → 0</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="915.12" y="442.04" transform="rotate(-0 915.12 442.04)">= 자동 예측인자 선택</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans Mono', 'NanumGothic'; text-anchor: start; fill: #c8661d" x="915.12" y="465.202242" transform="rotate(-0 915.12 465.202242)">train.fit_points</text>
+   </g>
+   <g id="text_46">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #c8661d" x="1192.32" y="392.52" transform="rotate(-0 1192.32 392.52)">최종 모형</text>
+   </g>
+   <g id="text_47">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="1192.32" y="412.504" transform="rotate(-0 1192.32 412.504)">희소 계수 W (pack_W)</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="1192.32" y="427.272" transform="rotate(-0 1192.32 427.272)">EOF·패턴 로딩, 표준화 값</text>
+   </g>
+   <g id="text_49">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="1192.32" y="442.04" transform="rotate(-0 1192.32 442.04)">σ, 3분위 경계, q10~q90</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans Mono', 'NanumGothic'; text-anchor: start; fill: #c8661d" x="1192.32" y="465.226148" transform="rotate(-0 1192.32 465.226148)">models/{kind}_{var}.npz</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="637.92" y="531.064" transform="rotate(-0 637.92 531.064)">재분석 입력 CV 점수(상관·MSESS)와 선택된 인자 빈도를 cv_seas5_{kind}_{var}.nc 에 저장</text>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="637.92" y="545.832" transform="rotate(-0 637.92 545.832)">모델 예보 기술(리드별 ACC·RPSS)은 6단계 재예보 검증에서 따로 평가</text>
+   </g>
+   <g id="text_53">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="392.61" transform="rotate(-0 43.92 392.61)">교차검증 산출 (공통)</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="412.504" transform="rotate(-0 43.92 412.504)">CV 예측 시계열 → 상관·MSESS·기준선(기후값) 비교</text>
+   </g>
+   <g id="text_55">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="427.272" transform="rotate(-0 43.92 427.272)">CV 잔차 σ (점·달별) → 6단계 확률의 퍼짐</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="442.04" transform="rotate(-0 43.92 442.04)">관측 편차 3분위 q33·q67 (1991–2020) → 확률 경계</text>
+   </g>
+   <g id="text_57">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="456.808" transform="rotate(-0 43.92 456.808)">q10·q50·q90 → 극한·중앙값 초과 확률</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 10.4px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #1d2327" x="43.92" y="471.576" transform="rotate(-0 43.92 471.576)">그림: docs/figures/fig02~05, fig_s4·s5</text>
+   </g>
+   <g id="text_59">
+    <text style="font-size: 7.5px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: end; fill: #7d8790" x="1454.4" y="656.01" transform="rotate(-0 1454.4 656.01)">nalssi89/downscale_by_pyesd · docs/design/make_flowchart.py</text>
+   </g>
+   <g id="text_60">
+    <text style="font-size: 8px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #4b5560" x="65.52" y="646.8" transform="rotate(-0 65.52 646.8)">처리 단계</text>
+   </g>
+   <g id="text_61">
+    <text style="font-size: 8px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #4b5560" x="146.64" y="646.8" transform="rotate(-0 146.64 646.8)">자료(파일)</text>
+   </g>
+   <g id="text_62">
+    <text style="font-size: 8px; font-family: 'NanumGothic', 'DejaVu Sans'; text-anchor: start; fill: #4b5560" x="232.24" y="646.8" transform="rotate(-0 232.24 646.8)">규칙·설명</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p4a22b3717b">
+   <rect x="0" y="0" width="1476" height="669.6"/>
+  </clipPath>
+ </defs>
+</svg>

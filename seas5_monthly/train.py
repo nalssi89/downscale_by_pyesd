@@ -1,6 +1,6 @@
 """SEAS5 월별 체계 전이함수 학습 — PyESD 원본형 (점별 ARD 회귀, 자동 인자선택).
 
-  KDS_WORK=... CDS_DIR=... python seas5_monthly/train.py [grid|asos|base] [T|P]
+  KDS_WORK=... CDS_DIR=... python seas5_monthly/train.py [grid|asos|base|nk] [T|P]
 
 입력: ERA5 1° 예측인자(CDS_DIR/era5_*.nc, predictors.py), 예측대상 월평균(KDS_WORK/target_grid.nc 412격자, target_asos.nc 66지점)
 방법: 달별(±1개월 창) 표본에 대해 EOF 적합 → 설계행렬 (지역평균 12 + 기후지수(자료에 따라 7~16) + EOF PC 9) 열 표준화 → 점별 ARDRegression
@@ -35,14 +35,16 @@ def load_target(kind, var):
         da = xr.DataArray(st.values, dims=("time", "pt"), coords={"time": st.time.values}); meta = {}
     else:
         # asos: ASOS 66지점 일자료(target_asos.nc) / base: 기준망 83지점 월자료(target_base.nc, training/build_base_network.py)
-        ds = xr.open_dataset(WORK / ("target_base.nc" if kind == "base" else "target_asos.nc"))
+        # nk: 북한 27지점 월자료(target_nk.nc, training/build_nk_network.py)
+        ds = xr.open_dataset(WORK / {"base": "target_base.nc", "nk": "target_nk.nc"}.get(kind, "target_asos.nc"))
         da = ds[var].rename(stn="pt"); lat, lon = ds.lat.values, ds.lon.values
         meta = dict(stn=ds.stn.values, name=ds.name.values.astype(str), jeju=ds.jeju.values)
         if "asos66" in ds:
             meta["asos66"] = ds.asos66.values
         da = da.drop_vars([c for c in da.coords if c != "time"])
-    mon = esd.transform(da if kind == "base" else esd.aggregate(da, "month"), var)   # base 는 이미 월자료
-    if kind == "base":
+    monthly = kind in ("base", "nk")
+    mon = esd.transform(da if monthly else esd.aggregate(da, "month"), var)   # base·nk 는 이미 월자료
+    if monthly:
         ya, yclim = base_anomalies(mon, lat, lon, meta, var)
     else:
         ya, yclim = esd.anomalies(mon, "month")
@@ -62,7 +64,7 @@ def base_anomalies(mon, lat, lon, meta, var, min_full=27):
     R = 6371.0; la, lo = np.deg2rad(lat), np.deg2rad(lon)
     d = 2 * R * np.arcsin(np.sqrt(np.sin((la[:, None] - la[None]) / 2) ** 2
                                   + np.cos(la[:, None]) * np.cos(la[None]) * np.sin((lo[:, None] - lo[None]) / 2) ** 2))
-    for j in np.where(~full)[0]:
+    for j in (np.where(~full)[0] if full.any() else []):     # 온전한 지점이 없으면(북한 2001~ 자료 등) 자기 기간 평균
         cand = np.where(full)[0]; n = cand[np.argmin(d[j, cand])]
         for k in range(1, 13):
             both = (m == k) & np.isfinite(c.values[:, j]) & np.isfinite(c.values[:, n])
@@ -70,7 +72,7 @@ def base_anomalies(mon, lat, lon, meta, var, min_full=27):
                 continue
             a, b = c.values[both, j].mean(), c.values[both, n].mean()
             clim[k - 1, j] = raw[k - 1, n] * (a / b) if (var == "P" and b > 0) else raw[k - 1, n] + (a - b)
-    print(f"  평년 보정: {int((~full).sum())}지점 (이웃 온전 지점 기준)", flush=True)
+    print(f"  평년 보정: {int((~full).sum()) if full.any() else 0}지점 (이웃 온전 지점 기준)", flush=True)
     mclim = xr.DataArray(clim, dims=("month", "pt"), coords={"month": np.arange(1, 13)})
     clim_fn = lambda month: mclim.sel(month=np.atleast_1d(month)).values
     return mon.groupby("time.month") - mclim, clim_fn

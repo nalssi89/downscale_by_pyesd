@@ -83,6 +83,6 @@ for i, var in enumerate(("T", "P")):
         nk, sk = s[s.group == "북한"][col].median(), s[s.group != "북한"][col].median()
         ax.set_title(f"{'기온' if var == 'T' else '강수'} {ttl}\n중앙값 북한 {nk:.2f} · 남한 {sk:.2f}", fontsize=10)
         ax.set_xticks([]); ax.set_yticks([])
-fig.suptitle("북한 27지점(테두리, 2001~2025) vs 남한 ASOS 66(1991~2025) 월자료", fontsize=12)
+fig.suptitle("북한 27지점(테두리) vs 남한 ASOS 66, 1991~2025 월자료", fontsize=12)
 fig.tight_layout(); fig.savefig(OUT / "nk_skill_map.png", dpi=130); plt.close(fig)
 print("saved", OUT)

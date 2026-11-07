@@ -1,6 +1,6 @@
 """C3S CDS 자료 입수 (SEAS5 월별 3개월 체계용) — 동시 요청 3건 이하로 순차 처리.
 
-  CDSAPI_KEY=... python seas5_monthly/get_cds.py OUTDIR [--init 10,11] [--fc-year 2026] [--only era5|seas5] [--workers 3]
+  CDSAPI_KEY=... python seas5_monthly/get_cds.py OUTDIR [--init 10,11] [--fc-year 2026] [--only era5|seas5] [--workers 1]
 
 받는 것 (모두 월평균 NetCDF, 1° 격자):
   ERA5 (학습·검증 기준, 1991~현재; CDS 비용 한도 때문에 연도 구간별 parts/ 로 받아 합침)
@@ -139,7 +139,7 @@ def main():
     ap.add_argument("--only", choices=["era5", "seas5"])
     ap.add_argument("--no-fc", action="store_true", help="실황 예보는 받지 않음(재예보만)")
     ap.add_argument("--no-hind", action="store_true", help="재예보는 받지 않음(실황만; 운영 전망용)")
-    ap.add_argument("--workers", type=int, default=3, help="동시 요청 수 (CDS 예절상 2~3)")
+    ap.add_argument("--workers", type=int, default=1, help="동시 요청 수 (기본 1: CDS는 계정당 1건씩 순차 — docs/CDS_DATA_ACCESS.md)")
     ap.add_argument("--no-ext", action="store_true", help="확장 장(200 hPa·인도양 SST·북반구 z500)은 받지 않음")
     a = ap.parse_args()
     if "CDSAPI_KEY" not in os.environ:

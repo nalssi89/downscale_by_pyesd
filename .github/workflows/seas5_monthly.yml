@@ -31,7 +31,7 @@ jobs:
       - name: SEAS5 실황 내려받기 (CDS)
         env:
           CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }}
-        run: python seas5_monthly/get_cds.py data/cds --only seas5 --no-hind --init ${{ steps.init.outputs.mm }} --fc-year ${{ steps.init.outputs.yy }}
+        run: python seas5_monthly/get_cds.py data/cds --only seas5 --no-hind --workers 1 --init ${{ steps.init.outputs.mm }} --fc-year ${{ steps.init.outputs.yy }}
       - name: 상세예측 (리드 2~4 = 다음 3개월)
         env:
           CDS_DIR: data/cds

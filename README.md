@@ -20,7 +20,7 @@ pyesd/          PyESD 구성요소 재구현: esd.py (기후값·EOF·반경평�
 ec46_weekly/    EC46 주별 운영: forecast.py, maps.py, openmeteo.py, models/*.npz (학습된 EOF·계수), data/geo
 seas5_monthly/  SEAS5 CDS 기반 3개월 체계 (자료 입수 → 예측인자 → 학습·재예보 검증 → 전망)
 training/       공통 학습·검증 코드 (ERA5·ASOS 입수, prep, train, 교차검증 그림, 모형 비교, 계수 내보내기)
-docs/           검증 그림·표, 단계별 적용 기록 페이지(pyesd_korea.html)
+docs/           검증 그림·표, 단계별 적용 기록 페이지(pyesd_korea.html), GloSea6 자료 요구사양(GLOSEA6_DATA_REQUIREMENTS.md)
 ```
 
 ## 방법 요약 (공통)

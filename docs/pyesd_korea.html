@@ -1,0 +1,290 @@
+<title>PyESD 한반도 상세예측</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 레이아웃: 좌측 고정 단계 색인 + 본문 한 열(최대 1120px). 단계 번호는 실제 PyESD 처리 순서. */
+:root{
+  --bg:#f7f6f2; --surface:#ffffff; --ink:#1e1f1c; --ink2:#5d5e57; --mute:#9a9b92; --line:#dfded6;
+  --accent:#2a63c4; --accent-soft:#e3ecfa; --warm:#c7571f;
+  --t-neg:#1d5fb8; --t-pos:#c93434; --p-neg:#a0671a; --p-pos:#1b8f67; --mid:#ebeae4;
+  --sans:"IBM Plex Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#17181a; --surface:#1f2124; --ink:#ecebe6; --ink2:#b3b2aa; --mute:#7c7c74; --line:#33353a;
+  --accent:#7aa6f0; --accent-soft:#223457; --warm:#e8884f; --t-neg:#5f95e8; --t-pos:#e86a6a; --p-neg:#d49a4f; --p-pos:#4cbf95; --mid:#2c2e33; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#17181a; --surface:#1f2124; --ink:#ecebe6; --ink2:#b3b2aa; --mute:#7c7c74; --line:#33353a;
+  --accent:#7aa6f0; --accent-soft:#223457; --warm:#e8884f; --t-neg:#5f95e8; --t-pos:#e86a6a; --p-neg:#d49a4f; --p-pos:#4cbf95; --mid:#2c2e33; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:15px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1120px;margin:0 auto}
+header{padding:40px 0 20px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+h1{font-size:clamp(24px,3.4vw,34px);font-weight:600;margin:6px 0 10px;text-wrap:balance;line-height:1.25}
+.lead{max-width:68ch;color:var(--ink2);margin:0}
+h2{font-size:21px;font-weight:600;margin:0 0 6px;text-wrap:balance}
+h3{font-size:16px;font-weight:600;margin:18px 0 6px}
+.step{padding:34px 0;border-bottom:1px solid var(--line);scroll-margin-top:16px}
+.step-no{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.06em}
+.pyesd{font-family:var(--mono);font-size:12.5px;color:var(--ink2);background:var(--mid);padding:2px 8px;border-radius:4px;display:inline-block;margin:4px 0 12px}
+p{max-width:72ch}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px 28px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 4px}
+@media (max-width:760px){.kpi{grid-template-columns:1fr 1fr}}
+.kpi .card b{display:block;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi .card span{font-size:12.5px;color:var(--ink2)}
+figure{margin:16px 0 0}
+figure img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+figcaption{font-size:13px;color:var(--ink2);margin-top:8px;max-width:90ch}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--ink2);font-size:12.5px}
+td.n,th.n{text-align:right}
+.tscroll{overflow-x:auto;max-width:100%}
+ul{padding-left:20px;max-width:72ch}
+li{margin:3px 0}
+code{font-family:var(--mono);font-size:13px;background:var(--mid);padding:1px 5px;border-radius:3px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.toc a{font-size:12.5px;text-decoration:none;color:var(--ink2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--surface)}
+.toc a:hover,.toc a:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
+/* 결과 표출 */
+.ctrl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:14px 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--ink2);padding:6px 12px;font:inherit;font-size:13.5px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+select{font:inherit;font-size:13.5px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.viz{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px}
+@media (max-width:860px){.viz{grid-template-columns:1fr}}
+.mapbox{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px}
+canvas{width:100%;height:auto;display:block;max-width:100%}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12.5px;padding:5px 8px;border-radius:5px;white-space:nowrap;transform:translate(-50%,-130%);font-variant-numeric:tabular-nums}
+.legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2);margin-top:8px;flex-wrap:wrap}
+.ramp{height:10px;width:160px;border-radius:3px;border:1px solid var(--line)}
+.summary{font-size:14px}
+.summary b{font-variant-numeric:tabular-nums}
+.bars{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;font-size:13px;margin-top:10px}
+.bar{height:16px;display:flex;border-radius:3px;overflow:hidden;background:var(--mid)}
+.bar i{display:block;height:100%}
+.bar .lo{background:var(--t-neg)} .bar .hi{background:var(--t-pos)} .bar .md{background:transparent}
+.bar.p .lo{background:var(--p-neg)} .bar.p .hi{background:var(--p-pos)}
+.stnlist{max-height:380px;overflow:auto;border:1px solid var(--line);border-radius:6px;margin-top:10px}
+.stnlist table{font-size:12.5px}
+.stnlist th{position:sticky;top:0;background:var(--surface)}
+.note{font-size:13px;color:var(--ink2);border-left:3px solid var(--warm);padding:4px 12px;margin:14px 0;max-width:80ch}
+details{margin-top:12px}
+summary{cursor:pointer;color:var(--accent);font-size:14px}
+footer{padding:28px 0 0;font-size:12.5px;color:var(--mute)}
+@media (prefers-reduced-motion:no-preference){.step{transition:background .2s}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Perfect-Prognosis statistical downscaling · PyESD workflow</div>
+  <h1>PyESD 전과정을 한반도 EC46·SEAS5 상세예측에 적용한 기록</h1>
+  <p class="lead">Dan-Boat/PyESD가 정의한 통계적 다운스케일링 절차(예측대상 → 예측인자 → 표준화·EOF → 전이함수 적합 → 교차검증 → 예측모형 적용)를 단계별로 그대로 따라가며, 북한을 포함한 한반도 0.25° 412격자와 ASOS 66지점(제주 4 포함)에 대해 ECMWF EC46(주 1~6주)·SEAS5(월 1~6개월) 기온·강수 상세예측을 만들고 그 결과를 표출합니다.</p>
+  <div class="kpi">
+    <div class="card"><b>0.97 / 0.95</b><span>격자 기온 교차검증 상관 (주 / 월, 1991~2022)</span></div>
+    <div class="card"><b>0.92 / 0.90</b><span>격자 강수 교차검증 상관 (주 / 월)</span></div>
+    <div class="card"><b>ARD ≈ Ridge</b><span>최적 전이함수 (ASOS 월별 비교, 10개 모형)</span></div>
+    <div class="card"><b>+1.5 ~ +1.7 °C</b><span>11월 넷째 주~12월 첫 주 한반도 평균 기온 편차 (EC46, 11/4 저녁 발표)</span></div>
+  </div>
+  <nav class="toc" aria-label="단계">
+    <a href="#s0">0 PyESD 대응표</a><a href="#s1">1 예측대상</a><a href="#s2">2 예측인자</a><a href="#s3">3 EOF</a><a href="#s4">4 전이함수</a><a href="#s5">5 검증·모형선택</a><a href="#s6">6 예보모형 적용</a><a href="#s7">7 결과 표출</a><a href="#s8">8 한계</a>
+  </nav>
+</header>
+
+<section class="step" id="s0">
+  <div class="step-no">STEP 0</div>
+  <h2>PyESD 절차와 이번 구현의 대응</h2>
+  <p>PyESD는 예측대상(predictand) 객체에 예측인자(predictor)를 붙이고, 표준화·특성선택·회귀모형 적합·교차검증·GCM 투영을 메서드로 제공합니다. PyPI의 pyESD 1.0.7은 scikit-learn 1.9에서 ARD의 <code>n_iter</code> 인자 때문에 동작하지 않아, 같은 역할을 하는 구성요소를 <code>esd.py</code>에 직접 구현했습니다.</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>단계</th><th>PyESD 구성요소</th><th>이번 구현 (코드)</th><th>한반도 적용 선택</th></tr></thead>
+    <tbody>
+    <tr><td>1 예측대상</td><td><code>StationOperator</code>, <code>MonthlyStandardizer</code></td><td><code>train.load_target</code>, <code>esd.harmonic_clim</code>, <code>esd.anomalies</code></td><td>ERA5 0.25° 412격자(남·북한 경계 폴리곤 육지비율 ≥ 20 %, 신의주·서해안 등 해안 격자 포함) + ASOS 66지점(내륙 62 + 제주 4; 남한 평균은 제주 제외 62지점), 1991~2020 조화함수(4항) 일별 기후값으로 편차화. 강수는 sqrt 변환</td></tr>
+    <tr><td>2 예측인자</td><td><code>Predictor</code>, <code>RegionalAverage</code>(반경 평균)</td><td><code>train.load_pred</code>, <code>esd.radius_weights</code>, <code>train.local_feats</code></td><td>ERA5 1.5° 247점(28~46N, 114~141E) 지상 4변수 t2m·d2m·msl·tp. 대상점별 반경 250 km 가우스 가중평균</td></tr>
+    <tr><td>3 원격상관·EOF</td><td><code>teleconnections.eof_analysis</code>, 기후지수 predictor</td><td><code>esd.EOFPredictors</code></td><td>변수별 표준화 편차장의 SVD → 상위 PC (주 6개·월 3개 × 4변수). 기후지수는 명시적으로 넣지 않고 EOF가 대신 담음</td></tr>
+    <tr><td>4 전이함수</td><td><code>Regressors</code> (Ridge, Lasso, ARD, RF, MLP, Stacking…), <code>fit</code></td><td><code>esd.fit_points</code>, <code>esd._ridge_batch</code></td><td>점별·달별(±1개월 창) 능형회귀, 열 표준화, α∈{1,10,100,1000}을 연도 5묶음 CV로 점별 선택. 412점을 배치로 한 번에 풀이</td></tr>
+    <tr><td>5 검증·모형선택</td><td><code>cross_validate_and_predict</code>, <code>model_selection</code></td><td><code>train.run</code>, <code>compare_models.py</code></td><td>leave-one-year-out(EOF도 폴드마다 재적합) + 독립 2023~2026. ASOS 월별 10개 모형 비교로 ARD·Lasso·Ridge 동급 확인</td></tr>
+    <tr><td>6 예측모형 적용</td><td><code>predict</code> with GCM/AMIP predictors, <code>ensemble_predict</code></td><td><code>downscaling/forecast.py</code> (bias_correct → predict → downscale)</td><td>Open-Meteo EC46(주)·SEAS5(월) 51멤버. 모형기후 편차 보정(기온 가산·강수 승산) 후 학습 EOF·계수에 투영, 멤버+CV 잔차 σ 정규혼합으로 3분위 확률</td></tr>
+    </tbody></table></div>
+</section>
+
+<section class="step" id="s1">
+  <div class="step-no">STEP 1</div>
+  <h2>예측대상: 한반도 상세 격자와 지점</h2>
+  <div class="pyesd">PyESD: StationOperator + MonthlyStandardizer</div>
+  <p>예측대상은 두 종류입니다. ERA5 0.25° 격자 중 한반도 412점(북한 포함, ECMWF ARCO zarr에서 1991~2026 일자료; 셀의 육지비율이 20 % 이상이면 포함해 신의주 같은 하구·해안 격자도 빠지지 않게 했습니다)과 기상청 ASOS 66지점(내륙 62 + 제주 4, 1991~2026 일자료)입니다. 남한 평균을 낼 때는 제주를 뺀 62지점을 씁니다. 일자료를 7일 이동평균(주)과 달력월 평균(월)으로 집계한 뒤, 1991~2020 기간의 평균 + 조화함수 4항으로 만든 일별 기후값을 빼서 편차로 바꿉니다. 강수는 분포가 치우쳐 있어 sqrt(mm/일) 공간에서 편차를 만들고, 마지막에 제곱해 되돌립니다.</p>
+  <figure><img src="figures/fig_s1_predictand.png" alt="1단계 예측대상: 1월·7월 기온 기후값, 7월 강수 기후값, ASOS 지점 연평균기온 지도"><figcaption>격자 기후값은 개마고원의 1월 −15 °C대와 남해안 7월 25 °C대를 그대로 분해합니다. 이 기후값 위에 예측된 편차를 얹어 상세예측값을 만듭니다.</figcaption></figure>
+</section>
+
+<section class="step" id="s2">
+  <div class="step-no">STEP 2</div>
+  <h2>예측인자: ERA5 1.5° 대규모장과 지역평균</h2>
+  <div class="pyesd">PyESD: Predictor + RegionalAverage</div>
+  <p>Perfect-Prognosis 방식은 학습에 관측(재분석) 대규모장을 쓰고, 운영에서는 같은 형태의 예보 대규모장을 넣습니다. Open-Meteo 계절예보 API가 지상 변수만 제공하기 때문에, 예측인자도 ERA5 지상 4변수(기온·이슬점·해면기압·강수)를 Open-Meteo 요청 좌표와 같은 1.5° 247점에서 뽑았습니다. 예측대상과 같은 방법으로 주·월 편차를 만들고, PyESD의 RegionalAverage에 해당하는 반경 250 km 가우스 가중평균을 대상점마다 계산해 "국지 신호" 인자로 씁니다(기온 모형은 t2m·d2m, 강수 모형은 tp·d2m·msl).</p>
+  <figure><img src="figures/fig_s2_predictors.png" alt="2단계 예측인자: 2026년 10월 넷째 주 4변수 편차장과 반경 가중치 예시"><figcaption>2026년 10월 22~28일 주평균 편차장. 파란 상자가 다운스케일 영역, 오른쪽은 평양 부근 격자의 지역평균 가중치입니다.</figcaption></figure>
+</section>
+
+<section class="step" id="s3">
+  <div class="step-no">STEP 3</div>
+  <h2>EOF 주성분: 기후인자를 담는 공통 예측인자</h2>
+  <div class="pyesd">PyESD: teleconnections.eof_analysis</div>
+  <p>달별 모형마다 ±1개월 창의 학습 표본으로 변수별 표준화 편차장을 SVD 분해하고, 상위 PC(주 6개·월 3개)를 표준화해 공통 예측인자로 씁니다. 4변수 × 6개 = 24개 PC가 설계행렬의 앞부분을 이룹니다. ENSO·북서태평양고기압 같은 기후인자 지수를 따로 넣지는 않았습니다. 예보 모형이 그런 강제에 반응해 만든 동아시아 대규모장의 패턴(예: 11월 기온 EOF2의 남북 대비, 해면기압 EOF2의 동서 대비)이 PC 값으로 들어오므로, 그 영향이 상세값으로 전달되는 구조입니다.</p>
+  <figure><img src="figures/fig_s3_eof.png" alt="3단계 EOF: 11월 주별 모형의 기온·해면기압·강수 EOF1~3"><figcaption>11월 주별 모형의 EOF. EOF1은 영역 전체의 동반 변동(기온 57 %, 해면기압 61 %), EOF2·3은 남북·동서 대비형 패턴입니다. 운영 시 예보장은 이 학습 EOF에 투영됩니다.</figcaption></figure>
+</section>
+
+<section class="step" id="s4">
+  <div class="step-no">STEP 4</div>
+  <h2>전이함수: 점별·달별 능형회귀</h2>
+  <div class="pyesd">PyESD: Regressors(RidgeCV) + fit</div>
+  <p>설계행렬은 [EOF 24 PC | 지역평균 2~3 | 절편]입니다. 열을 가중 표준편차로 표준화해 단위가 다른 인자들이 벌점을 고르게 받게 하고, 412개(또는 66개) 점을 배치로 한 번에 닫힌 형태로 풉니다. 규제 강도 α는 {1, 10, 100, 1000} 가운데 연도 5묶음 교차검증 오차가 가장 작은 값을 점별로 고릅니다. 대부분의 점에서 α=1~10이 선택되어 규제가 약한 쪽이 유리했습니다. 열 표준화를 넣은 뒤 월 강수 MSESS가 0.76에서 0.80으로 올랐습니다.</p>
+  <figure><img src="figures/fig_s4_transfer.png" alt="4단계 전이함수: 선택된 α 지도, 설계행렬 열별 기여, CV 잔차 σ"><figcaption>(c) 기여는 |β| × 인자 표준편차의 그룹 평균입니다. 국지 지역평균 항이 주 신호를 만들고 EOF PC가 공간 패턴을 보정합니다. (d) 잔차 σ는 확률 산출의 불확실성 폭이며, 북부 산악에서 큽니다.</figcaption></figure>
+</section>
+
+<section class="step" id="s5">
+  <div class="step-no">STEP 5</div>
+  <h2>검증과 모형 선택</h2>
+  <div class="pyesd">PyESD: cross_validate_and_predict + model_selection</div>
+  <p>교차검증은 leave-one-year-out이며, 누수를 막기 위해 EOF도 폴드마다 다시 적합합니다. 학습에 쓰지 않은 2023~2026년은 독립 검증으로 따로 봅니다. 비교 기준(원시)은 같은 ERA5 1.5° 반경평균을 그대로 내려 쓴 값입니다.</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>대상</th><th>변수</th><th class="n">주 r (원시)</th><th class="n">주 MSESS (원시)</th><th class="n">월 r (원시)</th><th class="n">월 MSESS (원시)</th><th class="n">독립 2023~26 r (주/월)</th></tr></thead>
+    <tbody>
+    <tr><td>격자 412</td><td>기온</td><td class="n">0.97 (0.95)</td><td class="n">0.94 (0.87)</td><td class="n">0.95 (0.94)</td><td class="n">0.90 (0.87)</td><td class="n">0.97 / 0.95</td></tr>
+    <tr><td>격자 412</td><td>강수</td><td class="n">0.92 (0.90)</td><td class="n">0.85 (0.79)</td><td class="n">0.90 (0.89)</td><td class="n">0.80 (0.77)</td><td class="n">0.92 / 0.88</td></tr>
+    <tr><td>ASOS 66</td><td>기온</td><td class="n">0.95 (0.92)</td><td class="n">0.90 (0.82)</td><td class="n">0.90 (0.90)</td><td class="n">0.82 (0.80)</td><td class="n">0.97 / 0.94</td></tr>
+    <tr><td>ASOS 66</td><td>강수</td><td class="n">0.87 (0.85)</td><td class="n">0.75 (0.69)</td><td class="n">0.81 (0.82)</td><td class="n">0.66 (0.63)</td><td class="n">0.86 / 0.79</td></tr>
+    </tbody></table></div>
+  <figure><img src="figures/fig_s5_cv_series.png" alt="5단계 검증: 서울 주평균 기온·강수 편차의 관측·원시·다운스케일 시계열 2023~2026"><figcaption>서울 지점 독립 기간. 기온은 원시 반경평균 대비 MSESS 0.90 → 0.96, 강수는 0.71 → 0.78로 개선됩니다.</figcaption></figure>
+  <div class="grid2">
+    <figure><img src="figures/fig03_skill_by_month.png" alt="달별 교차검증 상관"><figcaption>달별 상관. 기온은 5~6월, 강수는 6~8월(장마·태풍)에 낮아지며, ASOS 월 강수는 여름에 0.7대입니다.</figcaption></figure>
+    <figure><img src="figures/fig04_model_comparison.png" alt="모형 비교: ASOS 62지점 월별 MSESS 10개 모형"><figcaption>ASOS 62지점 월별(1·4·7·10월, 8묶음 CV). ARD 0.87/0.65, Lasso·Ridge가 0.01 이내로 뒤따르고, 트리·신경망·SVR은 뒤집니다. 운영은 빠르고 안정적인 Ridge로 했습니다.</figcaption></figure>
+  </div>
+  <figure><img src="figures/fig05_pp_check_2026.png" alt="2026년 재분석 대규모장 입력 시 월별 상세 재현"><figcaption>2026년 1·7·8·9월에 ERA5 대규모장을 넣었을 때의 재현. 기온 공간 상관 0.51~0.87, 강수 0.56~0.91로, 대규모장이 맞으면 상세 분포가 재현됩니다.</figcaption></figure>
+</section>
+
+<section class="step" id="s6">
+  <div class="step-no">STEP 6</div>
+  <h2>예보모형 적용: EC46·SEAS5 대규모장 투영</h2>
+  <div class="pyesd">PyESD: predict(GCM predictors) + ensemble_predict</div>
+  <p>운영은 저장소의 GitHub Actions가 매일 수행합니다(<code>downscaling/forecast.py</code>). Open-Meteo에서 EC46 주별·SEAS5 월별 51멤버의 4변수 평균과 편차(<code>*_mean</code>, <code>*_anomaly</code>)를 247점에 대해 받고, 두 값의 차이로 모형 기후를 역산해 ERA5 기후와의 차이를 보정합니다(기온·이슬점·해면기압은 가산, 강수는 승산). 보정된 편차장을 해당 달의 학습 EOF에 투영해 PC를 만들고, 반경평균 인자와 함께 저장된 계수에 곱해 점별 편차를 얻습니다. 확률은 멤버별 예측값에 교차검증 잔차 σ를 폭으로 하는 정규분포를 섞어 1991~2020 3분위 경계에 대해 적분한 값입니다.</p>
+  <figure><img src="figures/fig_s6_forecast_apply.png" alt="6단계: 리드별 한반도 평균 기온 편차와 멤버 퍼짐, 모형기후 보정량 표"><figcaption>2026-11-04 22 UTC 실행(EC46 저녁 갱신분, 6주, 412격자). 주별은 11월 넷째 주~12월 첫 주 온난 신호(+1.5~+1.7 °C, 높음 확률 53~60 %)가 오전 실행(+2.1~+2.4 °C)보다 다소 약해졌고, 월별은 12~4월 모두 +0.8~+1.6 °C로 같습니다. 보정량은 대부분 ±0.5 °C 이내로 작습니다.</figcaption></figure>
+</section>
+
+<section class="step" id="s7">
+  <div class="step-no">STEP 7</div>
+  <h2>결과 표출: 한반도 0.25° 412격자 상세예측과 ASOS 66지점값</h2>
+  <p>아래 지도는 저장소의 시험 워크플로가 실제 Open-Meteo 자료로 산출한 <code>downscaling.json</code>(2026-11-04 22:36 UTC, 412격자·ASOS 66지점 모형)을 그대로 그립니다. 기간과 변수를 고르고, 격자나 지점 위에 마우스를 올리면 값이 나타납니다.</p>
+  <div class="ctrl">
+    <div class="seg" role="group" aria-label="예보 종류"><button id="b-week" aria-pressed="true" data-prod="week">주별 EC46</button><button id="b-month" aria-pressed="false" data-prod="month">월별 SEAS5</button></div>
+    <label>기간 <select id="sel-period"></select></label>
+    <div class="seg" role="group" aria-label="변수">
+      <button id="v-ta" aria-pressed="true" data-var="ta">기온 편차</button><button id="v-tp" aria-pressed="false" data-var="tp">기온 높음 확률</button><button id="v-pp" aria-pressed="false" data-var="pp">강수 평년비</button><button id="v-pa" aria-pressed="false" data-var="pa">강수 많음 확률</button>
+    </div>
+  </div>
+  <div class="viz">
+    <div class="mapbox"><canvas id="map" width="760" height="900" aria-label="한반도 상세예측 지도"></canvas><div class="legend" id="legend"></div><div class="tip" id="tip" hidden></div></div>
+    <div class="card">
+      <div class="summary" id="summary"></div>
+      <div class="bars" id="bars"></div>
+      <h3 style="margin-top:16px">ASOS 66지점값</h3>
+      <div class="stnlist"><table id="stn"><thead><tr><th>지점</th><th class="n">기온 편차</th><th class="n">기온 (°C)</th><th class="n">높음 %</th><th class="n">강수 평년비 %</th><th class="n">많음 %</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+  <div class="note">강수 평년비는 멤버 평균을 sqrt 공간에서 되돌리면서 과대해지는 경향이 있으므로, 강수는 평년비보다 3분위 확률을 우선 보시길 권합니다.</div>
+  <details><summary>정적 지도(Actions 산출 PNG) 펼치기</summary>
+    <figure><img src="figures/map_week.png" alt="주별 EC46 상세예측 지도 5기간 × 4패널"><figcaption>주별 EC46(21 UTC 실행, 6주): 기온 편차, 기온 우세범주 확률, 강수 평년비, 강수 우세범주 확률.</figcaption></figure>
+    <figure><img src="figures/map_month.png" alt="월별 SEAS5 상세예측 지도 5기간 × 4패널"><figcaption>월별 SEAS5, 2026년 12월~2027년 4월.</figcaption></figure>
+  </details>
+</section>
+
+<section class="step" id="s8">
+  <div class="step-no">STEP 8</div>
+  <h2>한계와 다음 단계</h2>
+  <ul>
+    <li>위 점수는 재분석 대규모장을 넣었을 때의 <b>상세 재현력</b>이지 예보 성능이 아닙니다. 실제 성능은 EC46·SEAS5가 대규모장을 맞히는 정도에 좌우되며, 3주·2개월 이후로 갈수록 크게 떨어집니다. SEAS5 재예보(CDS, 1993~2016)로 리드별 성능을 재야 합니다.</li>
+    <li>Open-Meteo가 지상 변수만 주므로 500 hPa 지위고도·850 hPa 기온 같은 상층 인자가 없습니다. 장마전선·태풍 강수의 위치 오차가 그대로 남습니다.</li>
+    <li>기후지수(ENSO·고기압 지수)는 명시적 인자가 아닙니다. SEAS5 해수면온도에서 Niño3.4(RONI)를 계산해 월 모형에 더하고, 앞서 분석한 19개 기후인자와 EOF 성분의 대응을 정리하는 것이 다음 개선입니다.</li>
+    <li>강수 전이함수는 ARD로 바꾸면 ASOS 월 MSESS 0.62 → 0.65 정도 개선 여지가 있습니다.</li>
+  </ul>
+  <p>재현: <code>korea_downscaling/code/</code>의 <code>get_era5_kor.py → get_era5_pred.py → get_asos.py → train.py → make_figs.py / make_steps.py</code>, 운영은 저장소 <code>downscaling/forecast.py --maps</code>.</p>
+</section>
+<footer>자료: ECMWF ERA5(ARCO), 기상청 ASOS, Open-Meteo Seasonal API(ECMWF EC46·SEAS5). 기후값 기간 1991~2020. 저장소 nalssi89/objective_climate_outlook PR #1.</footer>
+</div>
+
+<script>
+(async function(){
+const $=s=>document.querySelector(s);
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const [fc,geo]=await Promise.all([fetch('data/fc.json').then(r=>r.json()),fetch('data/korea.json').then(r=>r.json())]);
+let prod='week',per=0,vr='ta';
+const cv=$('#map'),ctx=cv.getContext('2d'),tip=$('#tip');
+const X0=123.5,X1=131.5,Y0=33.0,Y1=43.2;
+const W=cv.width,H=cv.height,PAD=28,PADL=48;
+const sx=(W-PAD-PADL)/(X1-X0),sy=(H-2*PAD)/(Y1-Y0);
+const px=lon=>PADL+(lon-X0)*sx, py=lat=>H-PAD-(lat-Y0)*sy;
+function hex2rgb(h){h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16))}
+function mix(a,b,t){const A=hex2rgb(a),B=hex2rgb(b);return `rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(',')})`}
+function diverging(neg,pos,mid,v,lo,hi){ // v in [lo,hi], mid at 0
+  if(v==null||isNaN(v))return 'transparent';
+  const t=Math.max(-1,Math.min(1,v>=0?v/hi:-v/lo));
+  return v>=0?mix(mid,pos,Math.abs(t)):mix(mid,neg,Math.abs(t));
+}
+const VARS={
+  ta:{get:p=>p.gT.anom,geta:p=>p.aT.anom,lab:'기온 편차 (°C)',col:v=>diverging(css('--t-neg'),css('--t-pos'),css('--mid'),v,3,3),lo:'−3',hi:'+3',fmt:v=>(v>0?'+':'')+v.toFixed(1)+' °C',neg:'--t-neg',pos:'--t-pos'},
+  tp:{get:p=>p.gT.above.map((a,i)=>a-p.gT.below[i]),geta:p=>p.aT.above.map((a,i)=>a-p.aT.below[i]),lab:'기온 우세범주 (높음 − 낮음, %p)',col:v=>diverging(css('--t-neg'),css('--t-pos'),css('--mid'),v,60,60),lo:'낮음 60',hi:'높음 60',fmt:v=>(v>0?'높음 +':'낮음 ')+Math.abs(v).toFixed(0)+' %p',neg:'--t-neg',pos:'--t-pos'},
+  pp:{get:p=>p.gP.pct.map(v=>v-100),geta:p=>p.aP.pct.map(v=>v-100),lab:'강수 평년비 (%)',col:v=>diverging(css('--p-neg'),css('--p-pos'),css('--mid'),v,70,150),lo:'30',hi:'250',fmt:v=>(v+100).toFixed(0)+' %',neg:'--p-neg',pos:'--p-pos'},
+  pa:{get:p=>p.gP.above.map((a,i)=>a-p.gP.below[i]),geta:p=>p.aP.above.map((a,i)=>a-p.aP.below[i]),lab:'강수 우세범주 (많음 − 적음, %p)',col:v=>diverging(css('--p-neg'),css('--p-pos'),css('--mid'),v,60,60),lo:'적음 60',hi:'많음 60',fmt:v=>(v>0?'많음 +':'적음 ')+Math.abs(v).toFixed(0)+' %p',neg:'--p-neg',pos:'--p-pos'}
+};
+function period(){return fc.products[prod].periods[per]}
+function fillPeriods(){const s=$('#sel-period');s.innerHTML='';fc.products[prod].periods.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.label;s.appendChild(o)});per=Math.min(per,fc.products[prod].periods.length-1);s.value=per}
+function draw(){
+  const p=period(),V=VARS[vr],vals=V.get(p),avals=V.geta(p);
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=css('--surface');ctx.fillRect(0,0,W,H);
+  const d=0.125;
+  for(let i=0;i<fc.grid.lat.length;i++){const la=fc.grid.lat[i],lo=fc.grid.lon[i];ctx.fillStyle=V.col(vals[i]);ctx.fillRect(px(lo-d),py(la+d),(2*d)*sx+0.6,(2*d)*sy+0.6)}
+  ctx.strokeStyle=css('--ink2');ctx.lineWidth=0.9;
+  geo.features.forEach(f=>{const polys=f.geometry.type==='Polygon'?[f.geometry.coordinates]:f.geometry.coordinates;polys.forEach(rings=>rings.forEach(r=>{ctx.beginPath();r.forEach((c,k)=>k?ctx.lineTo(px(c[0]),py(c[1])):ctx.moveTo(px(c[0]),py(c[1])));ctx.closePath();ctx.stroke()}))});
+  // ASOS dots
+  fc.asos.lat.forEach((la,i)=>{ctx.beginPath();ctx.arc(px(fc.asos.lon[i]),py(la),5,0,Math.PI*2);ctx.fillStyle=V.col(avals[i]);ctx.fill();ctx.strokeStyle=css('--ink');ctx.lineWidth=0.8;ctx.stroke()});
+  // frame + ticks
+  ctx.strokeStyle=css('--line');ctx.lineWidth=1;ctx.strokeRect(PADL,PAD,W-PAD-PADL,H-2*PAD);
+  ctx.fillStyle=css('--ink2');ctx.font='12px '+css('--sans');ctx.textAlign='center';
+  [124,126,128,130].forEach(x=>ctx.fillText(x+'°E',px(x),H-8));ctx.textAlign='right';[34,36,38,40,42].forEach(y=>ctx.fillText(y+'°N',PADL-5,py(y)+4));
+  ctx.textAlign='left';ctx.fillStyle=css('--ink');ctx.font='600 14px '+css('--sans');ctx.fillText(`${fc.products[prod].model} · ${p.label} · ${V.lab}`,PADL,PAD-9);
+  $('#legend').innerHTML=`<span>${V.lo}</span><span class="ramp" style="background:linear-gradient(90deg,${css(V.neg)},${css('--mid')},${css(V.pos)})"></span><span>${V.hi}</span><span style="margin-left:12px">● ASOS 66지점 · 칸 0.25° 격자</span>`;
+  // summary
+  const mean=a=>a.reduce((s,v)=>s+v,0)/a.length;
+  const tA=mean(p.gT.anom),ab=mean(p.gT.above),nr=mean(p.gT.near),bl=mean(p.gT.below),ppct=mean(p.gP.pct),pab=mean(p.gP.above),pnr=mean(p.gP.near),pbl=mean(p.gP.below);
+  $('#summary').innerHTML=`<div><b>${fc.products[prod].model}</b> ${p.label} (${p.start} ~ ${p.end}) · 발표 ${fc.products[prod].issued}</div><div style="margin-top:6px">한반도 격자 평균 기온 편차 <b>${(tA>0?'+':'')+tA.toFixed(2)} °C</b>, 강수 평년비 <b>${ppct.toFixed(0)} %</b></div>${p.south?`<div style="margin-top:4px">남한 평균(제주 제외 ${p.south.n}지점) 기온 편차 <b>${(p.south.T_anom>0?'+':'')+p.south.T_anom.toFixed(2)} °C</b> (높음 ${p.south.T_above} %), 강수 평년비 <b>${p.south.P_pct} %</b> (많음 ${p.south.P_above} %)</div>`:''}<div style="color:var(--ink2);font-size:12.5px;margin-top:4px">모형기후 보정: t2m ${p.bias.t2m}, d2m ${p.bias.d2m}, msl ${p.bias.msl}, tp ${p.bias.tp}</div>`;
+  const bar=(cls,b,n,a)=>`<div class="bar ${cls}"><i class="lo" style="width:${b}%"></i><i class="md" style="width:${n}%"></i><i class="hi" style="width:${a}%"></i></div>`;
+  $('#bars').innerHTML=`<span>기온 낮음·비슷·높음</span>${bar('',bl,nr,ab)}<span style="grid-column:2;font-size:12px;color:var(--ink2)">${bl.toFixed(0)} · ${nr.toFixed(0)} · ${ab.toFixed(0)} %</span><span>강수 적음·비슷·많음</span>${bar('p',pbl,pnr,pab)}<span style="grid-column:2;font-size:12px;color:var(--ink2)">${pbl.toFixed(0)} · ${pnr.toFixed(0)} · ${pab.toFixed(0)} %</span>`;
+  const tb=$('#stn tbody');tb.innerHTML='';
+  fc.asos.name.forEach((n,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${n}${fc.asos.jeju&&fc.asos.jeju[i]?' <span style="color:var(--mute);font-size:11px">제주</span>':''}</td><td class="n">${(p.aT.anom[i]>0?'+':'')+p.aT.anom[i].toFixed(1)}</td><td class="n">${p.aT.value[i].toFixed(1)}</td><td class="n">${p.aT.above[i].toFixed(0)}</td><td class="n">${p.aP.pct[i].toFixed(0)}</td><td class="n">${p.aP.above[i].toFixed(0)}</td>`;tb.appendChild(tr)});
+}
+function setPressed(group,attr,val){document.querySelectorAll(`[data-${attr}]`).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset[attr]===val)))}
+document.querySelectorAll('[data-prod]').forEach(b=>b.addEventListener('click',()=>{prod=b.dataset.prod;setPressed('prod','prod',prod);fillPeriods();draw()}));
+document.querySelectorAll('[data-var]').forEach(b=>b.addEventListener('click',()=>{vr=b.dataset.var;setPressed('var','var',vr);draw()}));
+$('#sel-period').addEventListener('change',e=>{per=+e.target.value;draw()});
+cv.addEventListener('mousemove',e=>{
+  const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*W/r.width,y=(e.clientY-r.top)*H/r.height;
+  const lon=X0+(x-PADL)/sx,lat=Y0+(H-PAD-y)/sy,p=period(),V=VARS[vr];
+  let best=-1,bd=1e9;fc.asos.lat.forEach((la,i)=>{const dd=Math.hypot(px(fc.asos.lon[i])-x,py(la)-y);if(dd<bd){bd=dd;best=i}});
+  let txt='';
+  if(bd<8){const i=best;txt=`${fc.asos.name[i]} · 기온 ${(p.aT.anom[i]>0?'+':'')+p.aT.anom[i].toFixed(1)} °C (${p.aT.value[i].toFixed(1)} °C, 높음 ${p.aT.above[i].toFixed(0)} %) · 강수 ${p.aP.pct[i].toFixed(0)} % (많음 ${p.aP.above[i].toFixed(0)} %)`}
+  else{let gi=-1;for(let i=0;i<fc.grid.lat.length;i++){if(Math.abs(fc.grid.lat[i]-lat)<=0.125&&Math.abs(fc.grid.lon[i]-lon)<=0.125){gi=i;break}}
+    if(gi>=0){txt=`${fc.grid.lat[gi].toFixed(2)}N ${fc.grid.lon[gi].toFixed(2)}E · 기온 ${(p.gT.anom[gi]>0?'+':'')+p.gT.anom[gi].toFixed(1)} °C (높음 ${p.gT.above[gi].toFixed(0)} %) · 강수 ${p.gP.pct[gi].toFixed(0)} % (많음 ${p.gP.above[gi].toFixed(0)} %)`}}
+  if(txt){tip.textContent=txt;tip.hidden=false;tip.style.left=(e.clientX-r.left)+'px';tip.style.top=(e.clientY-r.top)+'px'}else tip.hidden=true;
+});
+cv.addEventListener('mouseleave',()=>{tip.hidden=true});
+if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',draw)}
+new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+fillPeriods();draw();
+})();
+</script>
